@@ -1,0 +1,334 @@
+{
+  "name": "FINRA - MPID Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ews.fip.finra.org/fip/rest/ews/oauth2/access_token?grant_type=client_credentials",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -304,
+        -272
+      ],
+      "id": "f058f213-b8c8-42b2-be54-b9e771006cd3",
+      "name": "FINRA - AccessToken",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "utakwq6PmeUptTVx",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.finra.org/data/group/OTCMARKET/name/MARKETPARTICIPANTLIST",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"quoteValues\": false,\n  \"delimiter\": \"|\",\n  \"limit\": 5000,\n  \"sortFields\": [\"marketParticipantName\"],\n  \"compareFilters\": [\n    {\n      \"fieldName\": \"asOfDate\",\n      \"fieldValue\": \"2026-04-07\",\n      \"compareType\": \"EQUAL\"\n    }\n  ]\n}",
+        "options": {
+          "pagination": {
+            "pagination": {
+              "paginationMode": "off"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -96,
+        -272
+      ],
+      "id": "99bec1d4-febc-43a1-a222-94811130689a",
+      "name": "Fetch MPID List"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 66502465,
+          "mode": "list",
+          "cachedResultName": "FINRA - MPID Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=66502465"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "MPID": "={{ $json.MPID }}",
+            "asOfDate": "={{ $json.asOfDate }}",
+            "marketParticipantName": "={{ $json.marketParticipantName }}",
+            "etl_creation_date": "={{ $json.asOfDate }}",
+            "etl_update_date": "={{ $json.asOfDate }}",
+            "brchk_inidividual_flag": "={{false}}",
+            "brchk_firm_flag": "={{false}}"
+          },
+          "matchingColumns": [
+            "MPID"
+          ],
+          "schema": [
+            {
+              "id": "MPID",
+              "displayName": "MPID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "asOfDate",
+              "displayName": "asOfDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "marketParticipantName",
+              "displayName": "marketParticipantName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "etl_creation_date",
+              "displayName": "etl_creation_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "etl_update_date",
+              "displayName": "etl_update_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "brchk_inidividual_flag",
+              "displayName": "brchk_inidividual_flag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "brchk_firm_flag",
+              "displayName": "brchk_firm_flag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        368,
+        -256
+      ],
+      "id": "1b702ed8-2c4c-4de1-86f2-e567066faf5b",
+      "name": "MPID List",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "J40Ds8J7hiE9y4uI",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 11
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -480,
+        -272
+      ],
+      "id": "e2abfeac-ad74-4439-ba0e-cbed6470c143",
+      "name": "Day - Trigger"
+    },
+    {
+      "parameters": {
+        "mode": "combineBySql",
+        "query": "SELECT input1.* FROM input1 LEFT JOIN input2 ON input1.MPID = input2.MPID\nWHERE input2.MPID IS NULL ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        208,
+        -400
+      ],
+      "id": "dd5ab44c-1cd7-4269-86f6-b7e2f4c8a5ce",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 66502465,
+          "mode": "list",
+          "cachedResultName": "FINRA - MPID Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=66502465"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        80,
+        -176
+      ],
+      "id": "b39e4c9c-02db-45d5-b39f-313e1194258d",
+      "name": "MPID List Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "J40Ds8J7hiE9y4uI",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "FINRA - AccessToken": {
+      "main": [
+        [
+          {
+            "node": "Fetch MPID List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch MPID List": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Day - Trigger": {
+      "main": [
+        [
+          {
+            "node": "FINRA - AccessToken",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "MPID List Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "MPID List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MPID List Sheet": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "3f65f768-9327-4219-b97f-6ecd4afbf264",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9e7bc5488b7965cc61f588b6dd83abac607fa500879b04518a94ca493b13572a"
+  },
+  "id": "vLAjw3RuViM29xmG",
+  "tags": []
+}

@@ -1,0 +1,260 @@
+{
+  "name": "Check-LastModifiedDate",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "eb2b63f8-31b8-4de4-b5dc-bf50709b518f",
+      "name": "Trigger Workflow"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1821406224,
+          "mode": "list",
+          "cachedResultName": "Ind_Disclosures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1821406224"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        0
+      ],
+      "id": "3e212d2d-378a-4e03-b8b3-335f71d198ca",
+      "name": "Read data from Disclosures Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "J40Ds8J7hiE9y4uI",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "HEAD",
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        368,
+        0
+      ],
+      "id": "269cfc6e-aceb-40d8-a584-f7db95711087",
+      "name": "Fetching MetaData"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d432c05e-bfac-44ce-a0a7-2029d6821dd0",
+              "leftValue": "={{ $json.headers[\"last-modified\"] }}",
+              "rightValue": "={{ $('Read data from Disclosures Sheet').item.json.file_last_modified_date }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        0
+      ],
+      "id": "88742c27-0d4c-4c49-9d75-4a6e46f977fa",
+      "name": "Filter - LastModifiedDate"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1821406224,
+          "mode": "list",
+          "cachedResultName": "Ind_Disclosures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1821406224"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ind_source_id": "={{ $('Read data from Disclosures Sheet').item.json.ind_source_id }}",
+            "file_last_modified_date": "={{ $('Fetching MetaData').item.json.headers[\"last-modified\"] }}",
+            "etl_last_update_date": "={{ new Date().toISOString() }}"
+          },
+          "matchingColumns": [
+            "ind_source_id"
+          ],
+          "schema": [
+            {
+              "id": "ind_source_id",
+              "displayName": "ind_source_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "file_last_modified_date",
+              "displayName": "file_last_modified_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etl_creation_date",
+              "displayName": "etl_creation_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "etl_last_update_date",
+              "displayName": "etl_last_update_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        800,
+        0
+      ],
+      "id": "77ca5f07-f35a-4ad9-89f7-ca74ca7426c4",
+      "name": "Update the Individual Disclosures Details",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "J40Ds8J7hiE9y4uI",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Trigger Workflow": {
+      "main": [
+        [
+          {
+            "node": "Read data from Disclosures Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read data from Disclosures Sheet": {
+      "main": [
+        [
+          {
+            "node": "Fetching MetaData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetching MetaData": {
+      "main": [
+        [
+          {
+            "node": "Filter - LastModifiedDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter - LastModifiedDate": {
+      "main": [
+        [
+          {
+            "node": "Update the Individual Disclosures Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "73c31972-5d2d-4bc7-828e-81dd967d3c22",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9e7bc5488b7965cc61f588b6dd83abac607fa500879b04518a94ca493b13572a"
+  },
+  "id": "p4bwpt0N5x3LRZc3",
+  "tags": []
+}
