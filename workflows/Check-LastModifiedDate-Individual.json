@@ -1,5 +1,5 @@
 {
-  "name": "Check-LastModifiedDate",
+  "name": "Check - LastModifiedDate  - Individual",
   "nodes": [
     {
       "parameters": {},
@@ -9,7 +9,7 @@
         0,
         0
       ],
-      "id": "eb2b63f8-31b8-4de4-b5dc-bf50709b518f",
+      "id": "dd12fcaa-b359-4c8a-9637-0a75c7a5ab5f",
       "name": "Trigger Workflow"
     },
     {
@@ -25,7 +25,7 @@
           "__rl": true,
           "value": 1821406224,
           "mode": "list",
-          "cachedResultName": "Ind_Disclosures",
+          "cachedResultName": "Individual - Disclosures",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1821406224"
         },
         "options": {}
@@ -36,11 +36,11 @@
         176,
         0
       ],
-      "id": "3e212d2d-378a-4e03-b8b3-335f71d198ca",
+      "id": "b28acc84-775d-4222-a425-ebc78c2a259e",
       "name": "Read data from Disclosures Sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "J40Ds8J7hiE9y4uI",
+          "id": "n3w79vnRP5x9wy2A",
           "name": "Google Sheets OAuth2 API"
         }
       }
@@ -64,7 +64,7 @@
         368,
         0
       ],
-      "id": "269cfc6e-aceb-40d8-a584-f7db95711087",
+      "id": "61288f9a-68b4-4577-875b-99931eac7706",
       "name": "Fetching MetaData"
     },
     {
@@ -94,10 +94,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        576,
+        592,
         0
       ],
-      "id": "88742c27-0d4c-4c49-9d75-4a6e46f977fa",
+      "id": "d2ba7fab-2c63-4b0a-a6d8-08a7f9f0aa05",
       "name": "Filter - LastModifiedDate"
     },
     {
@@ -114,7 +114,7 @@
           "__rl": true,
           "value": 1821406224,
           "mode": "list",
-          "cachedResultName": "Ind_Disclosures",
+          "cachedResultName": "Individual - Disclosures",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1821406224"
         },
         "columns": {
@@ -175,6 +175,16 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true
+            },
+            {
+              "id": "file_size",
+              "displayName": "file_size",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -185,14 +195,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        800,
+        816,
         0
       ],
-      "id": "77ca5f07-f35a-4ad9-89f7-ca74ca7426c4",
+      "id": "4dcf532a-51a7-4b16-b42e-e9570a4fa148",
       "name": "Update the Individual Disclosures Details",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "J40Ds8J7hiE9y4uI",
+          "id": "n3w79vnRP5x9wy2A",
           "name": "Google Sheets OAuth2 API"
         }
       }
@@ -250,11 +260,11 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "73c31972-5d2d-4bc7-828e-81dd967d3c22",
+  "versionId": "55728ff6-64e4-40c2-b725-e67bf2779dbf",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "9e7bc5488b7965cc61f588b6dd83abac607fa500879b04518a94ca493b13572a"
+    "instanceId": "8c4094288bc40d778d7d20f7876f715992b37f265e351137fef3b2ada953980a"
   },
-  "id": "p4bwpt0N5x3LRZc3",
+  "id": "Ncdix82zP1Q6PgMY",
   "tags": []
 }

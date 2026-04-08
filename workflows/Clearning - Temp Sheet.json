@@ -1,0 +1,82 @@
+{
+  "name": "Clearning - Temp Sheet",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "99401206-3228-4d91-9808-b90928c6f12d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 899773229,
+          "mode": "list",
+          "cachedResultName": "BrokerCheck - Individuals - TEMP",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=899773229"
+        },
+        "startIndex": 4,
+        "numberToDelete": 10000
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "f52c5de1-db4b-404a-b97a-6384a11538f8",
+      "name": "Removing - TEMP",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n3w79vnRP5x9wy2A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Removing - TEMP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Removing - TEMP": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "34e429a5-b9df-4d25-af18-2bf5b006a19e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8c4094288bc40d778d7d20f7876f715992b37f265e351137fef3b2ada953980a"
+  },
+  "id": "vySiwXyTfqWdqyOZ",
+  "tags": []
+}

@@ -10,10 +10,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        880,
-        96
+        656,
+        144
       ],
-      "id": "1a642fba-bc56-478b-a735-b806d5bea0ee",
+      "id": "574e0b69-a1f8-4fcc-acba-e07a0db6c5aa",
       "name": "Merge"
     },
     {
@@ -21,10 +21,10 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        96
+        -224,
+        144
       ],
-      "id": "556ff4d2-3015-4c5d-b6ed-9dbffe750a6a",
+      "id": "aea81537-b39e-4d42-89d0-6a20a7c979db",
       "name": "On - Trigger Workflow"
     },
     {
@@ -38,10 +38,10 @@
         },
         "sheetName": {
           "__rl": true,
-          "value": 899773229,
+          "value": 1652171982,
           "mode": "list",
-          "cachedResultName": "BrokerCheck - Individuals",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=899773229"
+          "cachedResultName": "BrokerCheck - Individual",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1652171982"
         },
         "filtersUI": {
           "values": [
@@ -56,14 +56,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        224,
-        -48
+        0,
+        0
       ],
-      "id": "95ecfc39-02b2-4458-a120-7a675ff3fa6d",
+      "id": "4d142cd8-1c71-4afa-be1b-d4420b3fbd32",
       "name": "Read Individual - Details",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "J40Ds8J7hiE9y4uI",
+          "id": "n3w79vnRP5x9wy2A",
           "name": "Google Sheets OAuth2 API"
         }
       }
@@ -77,10 +77,10 @@
       "type": "n8n-nodes-base.removeDuplicates",
       "typeVersion": 2,
       "position": [
-        432,
-        -48
+        208,
+        0
       ],
-      "id": "f1a3a7ba-df27-4570-9018-7374c237d453",
+      "id": "c792f511-e487-43b7-a68a-e77bc7181ff1",
       "name": "Remove Same ind_source_id"
     },
     {
@@ -102,13 +102,13 @@
             {
               "id": "61a03f7b-b313-48f5-a6a0-b5004bba8dc9",
               "name": "etl_creation_date",
-              "value": "={{new Date()}}",
+              "value": "={{ new Date().toISOString() }}",
               "type": "string"
             },
             {
               "id": "8fc5acfa-f6ed-4135-abb0-01c157df1067",
               "name": "etl_update_date",
-              "value": "={{new Date()}}",
+              "value": "={{ new Date().toISOString() }}",
               "type": "string"
             }
           ]
@@ -118,10 +118,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        640,
-        -48
+        416,
+        0
       ],
-      "id": "8a94cde5-0ea7-4f4c-af35-db6ed53d54eb",
+      "id": "584ead38-3eec-4276-9fab-ebf8e1e6d171",
       "name": "Arrange Parameters"
     },
     {
@@ -148,27 +148,25 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        224,
-        144
+        0,
+        192
       ],
-      "id": "05e2d963-99cb-4ecc-ab24-88182fa17711",
+      "id": "6b8d43fa-9ef3-476c-9f50-83f8d4df20e8",
       "name": "Read - Disclosures",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "J40Ds8J7hiE9y4uI",
+          "id": "n3w79vnRP5x9wy2A",
           "name": "Google Sheets OAuth2 API"
         }
       }
     },
     {
       "parameters": {
-        "method": "HEAD",
         "url": "={{ $json.url }}",
         "options": {
           "response": {
             "response": {
-              "fullResponse": true,
-              "responseFormat": "json"
+              "fullResponse": true
             }
           }
         }
@@ -176,10 +174,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1088,
-        96
+        1072,
+        144
       ],
-      "id": "84736d23-7703-4f5e-b9c0-ad273caaf1fd",
+      "id": "29e16b79-80f3-4cf5-b712-facd4391cea0",
       "name": "Fetch MetaData"
     },
     {
@@ -206,7 +204,8 @@
             "url": "={{ $('Arrange Parameters').item.json.url }}",
             "etl_creation_date": "={{ $('Arrange Parameters').item.json.etl_creation_date }}",
             "etl_last_update_date": "={{ $('Arrange Parameters').item.json.etl_update_date }}",
-            "file_last_modified_date": "={{ $json.headers[\"last-modified\"] }}"
+            "file_last_modified_date": "={{ $('Fetch MetaData').item.json.headers[\"last-modified\"] }}",
+            "file_size": "={{ $json.filesize }}"
           },
           "matchingColumns": [
             "ind_source_id"
@@ -261,6 +260,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "file_size",
+              "displayName": "file_size",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -271,17 +280,51 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1280,
-        96
+        1472,
+        144
       ],
-      "id": "d5d49888-3bbb-4d68-83a7-ccb9bea615d8",
+      "id": "00b3814d-e041-4d27-9915-67d0d07dc640",
       "name": "Update - Individual Disclosures",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "J40Ds8J7hiE9y4uI",
+          "id": "n3w79vnRP5x9wy2A",
           "name": "Google Sheets OAuth2 API"
         }
       }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        864,
+        144
+      ],
+      "id": "b4ce7e72-3236-4907-aa6a-11d5fc682a01",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3162d96e-173a-4d3b-a85e-22f994676436",
+              "name": "filesize",
+              "value": "={{ $binary.data.fileSize}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        144
+      ],
+      "id": "ee03c472-b246-4f66-916e-736e79168dc5",
+      "name": "Edit Fields"
     }
   ],
   "pinData": {},
@@ -290,7 +333,7 @@
       "main": [
         [
           {
-            "node": "Fetch MetaData",
+            "node": "Limit",
             "type": "main",
             "index": 0
           }
@@ -361,16 +404,33 @@
       "main": [
         [
           {
-            "node": "Update - Individual Disclosures",
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Update - Individual Disclosures": {
+    "Limit": {
       "main": [
-        []
+        [
+          {
+            "node": "Fetch MetaData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Update - Individual Disclosures",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -379,11 +439,11 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "0c2c6ef0-dd04-4572-9ba6-33c37c4841c4",
+  "versionId": "cbd581f1-9856-488e-b284-5c38824e4d6b",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "9e7bc5488b7965cc61f588b6dd83abac607fa500879b04518a94ca493b13572a"
+    "instanceId": "8c4094288bc40d778d7d20f7876f715992b37f265e351137fef3b2ada953980a"
   },
-  "id": "Ef2BDmpaWAN3gbIC",
+  "id": "I5v2H8OolAKlPIkZ",
   "tags": []
 }
