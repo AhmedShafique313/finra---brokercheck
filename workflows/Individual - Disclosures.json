@@ -17,17 +17,6 @@
       "name": "Merge"
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -224,
-        144
-      ],
-      "id": "aea81537-b39e-4d42-89d0-6a20a7c979db",
-      "name": "On - Trigger Workflow"
-    },
-    {
       "parameters": {
         "documentId": {
           "__rl": true,
@@ -325,6 +314,25 @@
       ],
       "id": "ee03c472-b246-4f66-916e-736e79168dc5",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -272,
+        80
+      ],
+      "id": "2d02d7f6-fa50-4438-83f8-02bdded2bc58",
+      "name": "Schedule Trigger"
     }
   ],
   "pinData": {},
@@ -334,22 +342,6 @@
         [
           {
             "node": "Limit",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "On - Trigger Workflow": {
-      "main": [
-        [
-          {
-            "node": "Read Individual - Details",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Read - Disclosures",
             "type": "main",
             "index": 0
           }
@@ -432,6 +424,22 @@
           }
         ]
       ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Individual - Details",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read - Disclosures",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -439,7 +447,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "cbd581f1-9856-488e-b284-5c38824e4d6b",
+  "versionId": "7f50ff25-ce5d-489f-8107-0c44d99b82cd",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8c4094288bc40d778d7d20f7876f715992b37f265e351137fef3b2ada953980a"

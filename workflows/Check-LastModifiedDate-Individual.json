@@ -1,17 +1,6 @@
 {
-  "name": "Check - LastModifiedDate  - Individual",
+  "name": "Individual - Update Tracker",
   "nodes": [
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "dd12fcaa-b359-4c8a-9637-0a75c7a5ab5f",
-      "name": "Trigger Workflow"
-    },
     {
       "parameters": {
         "documentId": {
@@ -206,21 +195,29 @@
           "name": "Google Sheets OAuth2 API"
         }
       }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 11
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5d6773ef-d4ff-4eb1-99aa-46322da6b049",
+      "name": "Schedule Trigger"
     }
   ],
   "pinData": {},
   "connections": {
-    "Trigger Workflow": {
-      "main": [
-        [
-          {
-            "node": "Read data from Disclosures Sheet",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Read data from Disclosures Sheet": {
       "main": [
         [
@@ -253,6 +250,17 @@
           }
         ]
       ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read data from Disclosures Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -260,7 +268,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "55728ff6-64e4-40c2-b725-e67bf2779dbf",
+  "versionId": "97274c98-cb7f-4edd-b2f6-65678473bf10",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8c4094288bc40d778d7d20f7876f715992b37f265e351137fef3b2ada953980a"

@@ -2,17 +2,6 @@
   "name": "Clearning - Temp Sheet",
   "nodes": [
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "99401206-3228-4d91-9808-b90928c6f12d",
-      "name": "When clicking ‘Execute workflow’"
-    },
-    {
       "parameters": {
         "operation": "delete",
         "documentId": {
@@ -46,11 +35,36 @@
           "name": "Google Sheets OAuth2 API"
         }
       }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 4
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4278fb33-7a64-462a-aa01-f649c5e36cff",
+      "name": "Schedule Trigger"
     }
   ],
   "pinData": {},
   "connections": {
-    "When clicking ‘Execute workflow’": {
+    "Removing - TEMP": {
+      "main": [
+        []
+      ]
+    },
+    "Schedule Trigger": {
       "main": [
         [
           {
@@ -60,11 +74,6 @@
           }
         ]
       ]
-    },
-    "Removing - TEMP": {
-      "main": [
-        []
-      ]
     }
   },
   "active": false,
@@ -72,7 +81,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "34e429a5-b9df-4d25-af18-2bf5b006a19e",
+  "versionId": "d8343128-0657-4228-ab67-17d04d64b369",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8c4094288bc40d778d7d20f7876f715992b37f265e351137fef3b2ada953980a"
