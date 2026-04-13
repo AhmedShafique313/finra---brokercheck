@@ -1,5 +1,5 @@
 {
-  "name": "Individual - Update Tracker",
+  "name": "Individual - Bulk Update Tracker",
   "nodes": [
     {
       "parameters": {
@@ -25,7 +25,7 @@
         176,
         0
       ],
-      "id": "b28acc84-775d-4222-a425-ebc78c2a259e",
+      "id": "f6e7cdc4-5841-44e3-8304-c7b7ec640f26",
       "name": "Read data from Disclosures Sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -33,29 +33,6 @@
           "name": "Google Sheets OAuth2 API"
         }
       }
-    },
-    {
-      "parameters": {
-        "method": "HEAD",
-        "url": "={{ $json.url }}",
-        "options": {
-          "response": {
-            "response": {
-              "fullResponse": true,
-              "responseFormat": "json"
-            }
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.4,
-      "position": [
-        368,
-        0
-      ],
-      "id": "61288f9a-68b4-4577-875b-99931eac7706",
-      "name": "Fetching MetaData",
-      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -87,51 +64,8 @@
         592,
         0
       ],
-      "id": "d2ba7fab-2c63-4b0a-a6d8-08a7f9f0aa05",
+      "id": "b824e438-788a-4316-87d0-47e1b7e9a253",
       "name": "Filter - LastModifiedDate"
-    },
-    {
-      "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "triggerAtHour": 11
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.3,
-      "position": [
-        0,
-        0
-      ],
-      "id": "5d6773ef-d4ff-4eb1-99aa-46322da6b049",
-      "name": "Schedule Trigger"
-    },
-    {
-      "parameters": {
-        "sendTo": "2021ee313@student.uet.edu.pk",
-        "subject": "=Update on Individual Disclosures – CRD No.  {{ $json.ind_source_id }}",
-        "emailType": "text",
-        "message": "=Hello Ahmed,\nI hope you're doing well.\n\nThere is an update in the individual disclosures, details of which are as follows:  \nCRD Number of the Individual: {{ $json.ind_source_id }}  \nFile URL: {{ $('Read data from Disclosures Sheet').item.json.url }}  \nModification Date: {{ $json.file_last_modified_date }}  \nPDF File Size: {{ $('Read data from Disclosures Sheet').item.json.file_size }}  \n\nBest Regards,  \nAhmed Shafique",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.2,
-      "position": [
-        1024,
-        0
-      ],
-      "id": "0d0a5b2e-8f17-47f2-bf5a-b8c586c8f895",
-      "name": "Send a message",
-      "webhookId": "cbcc7d23-456a-430b-84d3-9bea4c6c8ffb",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "06ibwPGPjW9fnFzS",
-          "name": "Gmail OAuth2 API"
-        }
-      }
     },
     {
       "parameters": {
@@ -153,9 +87,9 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
+            "ind_source_id": "={{ $('Read data from Disclosures Sheet').item.json.ind_source_id }}",
             "file_last_modified_date": "={{ $('Fetching MetaData').item.json.headers[\"last-modified\"] }}",
-            "etl_last_update_date": "={{ new Date().toISOString() }}",
-            "ind_source_id": "={{ $('Read data from Disclosures Sheet').item.json.ind_source_id }}"
+            "etl_last_update_date": "={{ new Date().toISOString() }}"
           },
           "matchingColumns": [
             "ind_source_id"
@@ -217,7 +151,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": true
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -228,17 +162,95 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        816,
+        848,
         0
       ],
-      "id": "4dcf532a-51a7-4b16-b42e-e9570a4fa148",
-      "name": "Update the Firm Disclosures Details",
+      "id": "9e3ad348-75c7-4ca0-ad83-50d115fd42bd",
+      "name": "Update the Individual Disclosures Details",
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "n3w79vnRP5x9wy2A",
           "name": "Google Sheets OAuth2 API"
         }
       }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 11
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8ddbad45-a655-4633-aec1-b73aae81a247",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "sendTo": "2021ee313@student.uet.edu.pk",
+        "subject": "=Update on Multiple Individual Disclosures ({{ $json.data.length }} files)",
+        "message": "=<p>Hello Ahmed,</p>\n<p>I hope you're doing well. The following individual disclosures have been updated:</p>\n\n<table border=\"1\" cellpadding=\"5\" cellspacing=\"0\" style=\"border-collapse: collapse;\">\n  <thead>\n    <tr>\n      <th>CRD No.</th>\n      <th>File URL</th>\n      <th>File Modified Date</th>\n      <th>ETL Update Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $json.data.map(item => `\n      <tr>\n        <td>${item.ind_source_id}</td>\n        <td><a href=\"https://finra.org{item.ind_source_id}.pdf\">View File</a></td>\n        <td>${item.file_last_modified_date}</td>\n        <td>${item.etl_last_update_date}</td>\n      </tr>\n    `).join('') }}\n  </tbody>\n</table>\n\n<p>Best Regards,<br>Ahmed Shafique</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1280,
+        0
+      ],
+      "id": "06d02dd0-802f-4520-8e8d-7007d7236037",
+      "name": "Send a message",
+      "webhookId": "3ef94977-c83d-4e45-b90f-bfe0cc5535b5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "06ibwPGPjW9fnFzS",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "HEAD",
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        368,
+        0
+      ],
+      "id": "13ca0db8-fffd-4c18-909a-421ce1074abb",
+      "name": "Fetching MetaData"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        0
+      ],
+      "id": "aa329d53-f1b4-4321-ad04-d570b237c8f7",
+      "name": "Aggregate"
     }
   ],
   "pinData": {},
@@ -254,22 +266,11 @@
         ]
       ]
     },
-    "Fetching MetaData": {
-      "main": [
-        [
-          {
-            "node": "Filter - LastModifiedDate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Filter - LastModifiedDate": {
       "main": [
         [
           {
-            "node": "Update the Firm Disclosures Details",
+            "node": "Update the Individual Disclosures Details",
             "type": "main",
             "index": 0
           }
@@ -287,7 +288,29 @@
         ]
       ]
     },
-    "Update the Firm Disclosures Details": {
+    "Update the Individual Disclosures Details": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetching MetaData": {
+      "main": [
+        [
+          {
+            "node": "Filter - LastModifiedDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
       "main": [
         [
           {
@@ -302,13 +325,14 @@
   "active": false,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate"
+    "binaryMode": "separate",
+    "availableInMCP": false
   },
-  "versionId": "694c1187-5a4c-44b0-852b-bb32300b444e",
+  "versionId": "cf90fa3f-b6ec-411a-aadf-b2425d7b4b4a",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8c4094288bc40d778d7d20f7876f715992b37f265e351137fef3b2ada953980a"
   },
-  "id": "Ncdix82zP1Q6PgMY",
+  "id": "uV6k6Ls4FB8SCkWz",
   "tags": []
 }

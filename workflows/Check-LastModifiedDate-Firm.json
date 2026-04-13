@@ -1,5 +1,5 @@
 {
-  "name": "Individual - Update Tracker",
+  "name": "Firm - Update Tracker",
   "nodes": [
     {
       "parameters": {
@@ -12,10 +12,10 @@
         },
         "sheetName": {
           "__rl": true,
-          "value": 1821406224,
+          "value": 16738542,
           "mode": "list",
-          "cachedResultName": "Individual - Disclosures",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1821406224"
+          "cachedResultName": "Firm - Disclosures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=16738542"
         },
         "options": {}
       },
@@ -23,9 +23,9 @@
       "typeVersion": 4.7,
       "position": [
         176,
-        0
+        -16
       ],
-      "id": "b28acc84-775d-4222-a425-ebc78c2a259e",
+      "id": "62c99241-9eaa-4e05-9a7c-ee342a9ccd80",
       "name": "Read data from Disclosures Sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -51,9 +51,9 @@
       "typeVersion": 4.4,
       "position": [
         368,
-        0
+        -16
       ],
-      "id": "61288f9a-68b4-4577-875b-99931eac7706",
+      "id": "5fd62e9a-7aae-4e12-9f90-1ed7b9794bc5",
       "name": "Fetching MetaData",
       "onError": "continueRegularOutput"
     },
@@ -84,10 +84,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        592,
+        800,
         0
       ],
-      "id": "d2ba7fab-2c63-4b0a-a6d8-08a7f9f0aa05",
+      "id": "ab3d42a1-414f-4a62-8c4c-08e32890f6c6",
       "name": "Filter - LastModifiedDate"
     },
     {
@@ -104,28 +104,28 @@
       "typeVersion": 1.3,
       "position": [
         0,
-        0
+        -16
       ],
-      "id": "5d6773ef-d4ff-4eb1-99aa-46322da6b049",
+      "id": "fa582b9c-e98a-48ee-ae7c-dc7fe6a2729b",
       "name": "Schedule Trigger"
     },
     {
       "parameters": {
         "sendTo": "2021ee313@student.uet.edu.pk",
-        "subject": "=Update on Individual Disclosures – CRD No.  {{ $json.ind_source_id }}",
+        "subject": "=Update on Firm Disclosures – CRD No.{{ $json.firm_source_id }}",
         "emailType": "text",
-        "message": "=Hello Ahmed,\nI hope you're doing well.\n\nThere is an update in the individual disclosures, details of which are as follows:  \nCRD Number of the Individual: {{ $json.ind_source_id }}  \nFile URL: {{ $('Read data from Disclosures Sheet').item.json.url }}  \nModification Date: {{ $json.file_last_modified_date }}  \nPDF File Size: {{ $('Read data from Disclosures Sheet').item.json.file_size }}  \n\nBest Regards,  \nAhmed Shafique",
+        "message": "=Hello Ahmed,\nI hope you're doing well.\n\nThere is an update in the individual disclosures, details of which are as follows:  \nCRD Number of the Firm: {{ $json.firm_source_id }}\nFile URL: {{ $('Read data from Disclosures Sheet').item.json.url }}  \nModification Date: {{ $json.file_last_modified_date }}\nPDF File Size: {{ $('Read data from Disclosures Sheet').item.json.file_size }}  \n\nBest Regards,  \nAhmed Shafique",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        1024,
+        1232,
         0
       ],
-      "id": "0d0a5b2e-8f17-47f2-bf5a-b8c586c8f895",
+      "id": "0cfb4d39-64e8-4914-8d8a-b0ec6071b060",
       "name": "Send a message",
-      "webhookId": "cbcc7d23-456a-430b-84d3-9bea4c6c8ffb",
+      "webhookId": "0b7aabe1-d589-458d-a343-b29a9d28f56b",
       "credentials": {
         "gmailOAuth2": {
           "id": "06ibwPGPjW9fnFzS",
@@ -145,25 +145,25 @@
         },
         "sheetName": {
           "__rl": true,
-          "value": 1821406224,
+          "value": 16738542,
           "mode": "list",
-          "cachedResultName": "Individual - Disclosures",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1821406224"
+          "cachedResultName": "Firm - Disclosures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=16738542"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "file_last_modified_date": "={{ $('Fetching MetaData').item.json.headers[\"last-modified\"] }}",
-            "etl_last_update_date": "={{ new Date().toISOString() }}",
-            "ind_source_id": "={{ $('Read data from Disclosures Sheet').item.json.ind_source_id }}"
+            "firm_source_id": "={{ $('Read data from Disclosures Sheet').item.json.firm_source_id }}",
+            "file_last_modified_date": "={{ $('If').item.json.headers[\"last-modified\"] }}",
+            "etl_last_update_date": "={{ new Date().toISOString() }}"
           },
           "matchingColumns": [
-            "ind_source_id"
+            "firm_source_id"
           ],
           "schema": [
             {
-              "id": "ind_source_id",
-              "displayName": "ind_source_id",
+              "id": "firm_source_id",
+              "displayName": "firm_source_id",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -218,6 +218,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -228,10 +238,10 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        816,
+        1024,
         0
       ],
-      "id": "4dcf532a-51a7-4b16-b42e-e9570a4fa148",
+      "id": "62eb6ac8-473c-479c-9f59-7f59f3d84ed1",
       "name": "Update the Firm Disclosures Details",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -239,6 +249,39 @@
           "name": "Google Sheets OAuth2 API"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d44d1a8e-d3f3-4668-817d-47cbea0bffc4",
+              "leftValue": "={{ $json.error.status }}",
+              "rightValue": 403,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        -16
+      ],
+      "id": "252a33ae-028f-4e68-9f60-e70ec95039e1",
+      "name": "If"
     }
   ],
   "pinData": {},
@@ -258,7 +301,7 @@
       "main": [
         [
           {
-            "node": "Filter - LastModifiedDate",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -297,18 +340,31 @@
           }
         ]
       ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Filter - LastModifiedDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate"
+    "binaryMode": "separate",
+    "availableInMCP": false
   },
-  "versionId": "694c1187-5a4c-44b0-852b-bb32300b444e",
+  "versionId": "06597e1f-de9e-4936-85da-864e28587207",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8c4094288bc40d778d7d20f7876f715992b37f265e351137fef3b2ada953980a"
   },
-  "id": "Ncdix82zP1Q6PgMY",
+  "id": "GiuS5m2QNd1dkCZE",
   "tags": []
 }

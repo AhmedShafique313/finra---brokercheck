@@ -1,0 +1,1318 @@
+{
+  "name": "BrokerCheck - Firm - Optimized",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8bdf084b-a85c-4f66-85c2-9f258cd892fb",
+              "name": "records",
+              "value": "={{ $json.hits.hits }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1568,
+        0
+      ],
+      "id": "771592f2-ca26-4256-a690-d204fe7cf880",
+      "name": "Preserve MetaData"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "records",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1984,
+        0
+      ],
+      "id": "c9abf8b5-c203-428f-a754-06f7e6756394",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0eb897e8-ba44-4dca-bca2-52fb5c1cea3b",
+              "name": "records",
+              "value": "={{ $json.records }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1776,
+        0
+      ],
+      "id": "00406983-ac76-4bda-bc54-f9dd0edcc23d",
+      "name": "Required - Fields"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.brokercheck.finra.org/search/firm?query={{ $('Limit').item.json.MPID }}&includePrevious=true&nrows=100&wt=json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": []
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {
+          "proxy": "http://otncofqs:7qk7kvxvtl5d@31.59.20.176:6754"
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        656,
+        32
+      ],
+      "id": "6e6fd4a1-a96f-4bda-a29f-21de592e9b6c",
+      "name": "Individual - MPID",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "url": "=https://api.brokercheck.finra.org/search/firm?query={{ $('Limit').item.json.MPID }}&includePrevious=true&nrows=100&wt=json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": []
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "start",
+                    "value": "={{ $pageCount+1 }}"
+                  }
+                ]
+              },
+              "limitPagesFetched": true,
+              "maxRequests": "={{ Math.ceil($json.hits.total /100 )}}",
+              "requestInterval": 2
+            }
+          },
+          "proxy": "http://otncofqs:7qk7kvxvtl5d@31.59.20.176:6754"
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1376,
+        0
+      ],
+      "id": "fa65b9a8-e4f3-48ec-8280-19efc6558291",
+      "name": "Details - Pagination",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 66502465,
+          "mode": "list",
+          "cachedResultName": "FINRA - MPID Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=66502465"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "MPID": "={{ $json.MPID }}",
+            "brchk_firm_flag": "={{true}}"
+          },
+          "matchingColumns": [
+            "MPID"
+          ],
+          "schema": [
+            {
+              "id": "MPID",
+              "displayName": "MPID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "asOfDate",
+              "displayName": "asOfDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "marketParticipantName",
+              "displayName": "marketParticipantName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "etl_creation_date",
+              "displayName": "etl_creation_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "etl_update_date",
+              "displayName": "etl_update_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "brchk_inidividual_flag",
+              "displayName": "brchk_inidividual_flag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "brchk_firm_flag",
+              "displayName": "brchk_firm_flag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2864,
+        0
+      ],
+      "id": "2ec18340-ea60-486a-bbc6-289070dc3b99",
+      "name": "Update - Flag",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n3w79vnRP5x9wy2A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "compare": "selectedFields",
+        "fieldsToCompare": "firm_source_id",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        0
+      ],
+      "id": "db718443-e7e8-4378-8150-68e57104c484",
+      "name": "Remove Duplicates"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 946599909,
+          "mode": "list",
+          "cachedResultName": "BrokerCheck - Firm - TEMP",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=946599909"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "firm_source_id": "={{ $json._source.firm_source_id }}",
+            "firm_ia_sec_number": "={{ $json._source.firm_ia_sec_number }}",
+            "firm_ia_full_sec_number": "={{ $json._source.firm_ia_full_sec_number }}",
+            "firm_name": "={{ $json._source.firm_name }}",
+            "firm_other_names": "={{ $json._source.firm_other_names }}",
+            "firm_ia_scope": "={{ $json._source.firm_ia_scope }}",
+            "firm_ia_disclosure_fl": "={{ $json._source.firm_ia_disclosure_fl }}",
+            "firm_branches_count": "={{ $json._source.firm_branches_count }}",
+            "firm_ia_address_details": "={{ $json._source.firm_ia_address_details }}",
+            "highlights": "={{ $json.highlight }}",
+            "MPID": "={{ $('Limit').item.json.MPID }}"
+          },
+          "matchingColumns": [
+            "firm_source_id"
+          ],
+          "schema": [
+            {
+              "id": "firm_source_id",
+              "displayName": "firm_source_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firm_ia_sec_number",
+              "displayName": "firm_ia_sec_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firm_ia_full_sec_number",
+              "displayName": "firm_ia_full_sec_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firm_name",
+              "displayName": "firm_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firm_other_names",
+              "displayName": "firm_other_names",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firm_ia_scope",
+              "displayName": "firm_ia_scope",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firm_ia_disclosure_fl",
+              "displayName": "firm_ia_disclosure_fl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firm_branches_count",
+              "displayName": "firm_branches_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firm_ia_address_details",
+              "displayName": "firm_ia_address_details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "highlights",
+              "displayName": "highlights",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "MPID",
+              "displayName": "MPID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2192,
+        0
+      ],
+      "id": "867125f2-fb9d-4959-ac29-a230213c34a6",
+      "name": "TEMP - Sheet",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n3w79vnRP5x9wy2A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        64,
+        32
+      ],
+      "id": "4a70fbfb-3674-46eb-9be4-57109d242a8d",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 66502465,
+          "mode": "list",
+          "cachedResultName": "FINRA - MPID Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=66502465"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "brchk_firm_flag",
+              "lookupValue": "false"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        256,
+        32
+      ],
+      "id": "91053e8b-172b-4400-aa73-b3b76e25277a",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n3w79vnRP5x9wy2A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        464,
+        32
+      ],
+      "id": "e349cd98-7719-484e-90f8-9d4e6f08ee33",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "95e83ce2-ba02-46bc-a07f-65871f14e584",
+              "leftValue": "={{ $json.hits.total }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        816,
+        32
+      ],
+      "id": "036fd0f7-6a68-4c8b-9fab-dcd0e00dda75",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 66502465,
+          "mode": "list",
+          "cachedResultName": "FINRA - MPID Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=66502465"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "MPID": "={{ $('Limit').item.json.MPID }}",
+            "brchk_firm_flag": "={{ true }}"
+          },
+          "matchingColumns": [
+            "MPID"
+          ],
+          "schema": [
+            {
+              "id": "MPID",
+              "displayName": "MPID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "asOfDate",
+              "displayName": "asOfDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "marketParticipantName",
+              "displayName": "marketParticipantName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "etl_creation_date",
+              "displayName": "etl_creation_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "etl_update_date",
+              "displayName": "etl_update_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "brchk_inidividual_flag",
+              "displayName": "brchk_inidividual_flag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "brchk_firm_flag",
+              "displayName": "brchk_firm_flag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1040,
+        224
+      ],
+      "id": "b0996a33-dfe7-4c2e-b111-fd7ba626829d",
+      "name": "Update - Flag - No Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n3w79vnRP5x9wy2A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1028702497,
+          "mode": "list",
+          "cachedResultName": "BrokerCheck - Firm",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1028702497"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "firm_source_id": "={{ $json.firm_source_id }}",
+            "firm_ia_sec_number": "={{ $json.firm_ia_sec_number }}",
+            "firm_ia_full_sec_number": "={{ $json.firm_ia_full_sec_number }}",
+            "firm_name": "={{ $json.firm_name }}",
+            "firm_other_names": "={{ $json.firm_other_names }}",
+            "firm_ia_scope": "={{ $json.firm_ia_scope }}",
+            "firm_ia_disclosure_fl": "={{ $json.firm_ia_disclosure_fl }}",
+            "firm_branches_count": "={{ $json.firm_branches_count }}",
+            "firm_ia_address_details": "={{ $json.firm_ia_address_details }}",
+            "highlights": "={{ $json.highlights }}",
+            "MPID": "={{ $json.MPID }}"
+          },
+          "matchingColumns": [
+            "firm_source_id"
+          ],
+          "schema": [
+            {
+              "id": "firm_source_id",
+              "displayName": "firm_source_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firm_ia_sec_number",
+              "displayName": "firm_ia_sec_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_ia_full_sec_number",
+              "displayName": "firm_ia_full_sec_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_name",
+              "displayName": "firm_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_other_names",
+              "displayName": "firm_other_names",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_ia_scope",
+              "displayName": "firm_ia_scope",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_ia_disclosure_fl",
+              "displayName": "firm_ia_disclosure_fl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_branches_count",
+              "displayName": "firm_branches_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_ia_address_details",
+              "displayName": "firm_ia_address_details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "highlights",
+              "displayName": "highlights",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "MPID",
+              "displayName": "MPID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2624,
+        0
+      ],
+      "id": "e9e256e7-5406-4ed7-aff5-de01eab10f31",
+      "name": "BrokerCheck - Firm",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n3w79vnRP5x9wy2A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0a2f9e05-a5a6-4f90-bfcf-4580a6d8c6a2",
+              "leftValue": "={{ $json.hits.total }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1136,
+        16
+      ],
+      "id": "0c238565-46cc-43db-b47c-7747edab97c8",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1028702497,
+          "mode": "list",
+          "cachedResultName": "BrokerCheck - Firm",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1028702497"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "firm_source_id": "={{ $json.hits.hits[0]._source.firm_source_id }}",
+            "firm_ia_sec_number": "={{ $json.hits.hits[0]._source.firm_ia_sec_number }}",
+            "firm_ia_full_sec_number": "={{ $json.hits.hits[0]._source.firm_ia_full_sec_number }}",
+            "firm_name": "={{ $json.hits.hits[0]._source.firm_name }}",
+            "firm_other_names": "={{ $json.hits.hits[0]._source.firm_other_names }}",
+            "firm_ia_scope": "={{ $json.hits.hits[0]._source.firm_ia_scope }}",
+            "firm_ia_disclosure_fl": "={{ $json.hits.hits[0]._source.firm_ia_disclosure_fl }}",
+            "firm_branches_count": "={{ $json.hits.hits[0]._source.firm_branches_count }}",
+            "firm_ia_address_details": "={{ $json.hits.hits[0]._source.firm_ia_address_details }}",
+            "highlights": "={{ $json.hits.hits[0].highlight }}",
+            "MPID": "={{ $('Limit').item.json.MPID }}"
+          },
+          "matchingColumns": [
+            "firm_source_id"
+          ],
+          "schema": [
+            {
+              "id": "firm_source_id",
+              "displayName": "firm_source_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firm_ia_sec_number",
+              "displayName": "firm_ia_sec_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_ia_full_sec_number",
+              "displayName": "firm_ia_full_sec_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_name",
+              "displayName": "firm_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_other_names",
+              "displayName": "firm_other_names",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_ia_scope",
+              "displayName": "firm_ia_scope",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_ia_disclosure_fl",
+              "displayName": "firm_ia_disclosure_fl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_branches_count",
+              "displayName": "firm_branches_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firm_ia_address_details",
+              "displayName": "firm_ia_address_details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "highlights",
+              "displayName": "highlights",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "MPID",
+              "displayName": "MPID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1392,
+        240
+      ],
+      "id": "d6761e2d-ef5e-400b-90ff-ad011854344b",
+      "name": "BrokerCheck - Firm1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n3w79vnRP5x9wy2A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 66502465,
+          "mode": "list",
+          "cachedResultName": "FINRA - MPID Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=66502465"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "MPID": "={{ $json.MPID }}",
+            "brchk_firm_flag": "={{true}}"
+          },
+          "matchingColumns": [
+            "MPID"
+          ],
+          "schema": [
+            {
+              "id": "MPID",
+              "displayName": "MPID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "asOfDate",
+              "displayName": "asOfDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "marketParticipantName",
+              "displayName": "marketParticipantName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "etl_creation_date",
+              "displayName": "etl_creation_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "etl_update_date",
+              "displayName": "etl_update_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "brchk_inidividual_flag",
+              "displayName": "brchk_inidividual_flag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "brchk_firm_flag",
+              "displayName": "brchk_firm_flag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1632,
+        240
+      ],
+      "id": "56d183b4-98d5-4738-8ace-a5c255dafc3e",
+      "name": "Update - Flag1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n3w79vnRP5x9wy2A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Preserve MetaData": {
+      "main": [
+        [
+          {
+            "node": "Required - Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Required - Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "TEMP - Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Individual - MPID": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Details - Pagination": {
+      "main": [
+        [
+          {
+            "node": "Preserve MetaData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update - Flag": {
+      "main": [
+        []
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "BrokerCheck - Firm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TEMP - Sheet": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Individual - MPID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update - Flag - No Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BrokerCheck - Firm": {
+      "main": [
+        [
+          {
+            "node": "Update - Flag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Details - Pagination",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "BrokerCheck - Firm1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BrokerCheck - Firm1": {
+      "main": [
+        [
+          {
+            "node": "Update - Flag1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c64b08f7-17ad-43f3-8317-cd7cf8affed8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8c4094288bc40d778d7d20f7876f715992b37f265e351137fef3b2ada953980a"
+  },
+  "id": "MXoMeiyPIB2VwTCp",
+  "tags": []
+}
