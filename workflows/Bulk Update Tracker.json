@@ -3,125 +3,6 @@
   "nodes": [
     {
       "parameters": {
-        "operation": "appendOrUpdate",
-        "documentId": {
-          "__rl": true,
-          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
-          "mode": "list",
-          "cachedResultName": "N8N - Project All Records",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 16738542,
-          "mode": "list",
-          "cachedResultName": "Firm - Disclosures",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=16738542"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "firm_source_id": "={{ $('Firm - Disclosures').item.json.firm_source_id }}",
-            "file_last_modified_date": "={{ $json.headers[\"last-modified\"] }}",
-            "etl_last_update_date": "={{ new Date().toISOString() }}",
-            "url": "={{ $('Firm - Disclosures').item.json.url }}",
-            "etl_creation_date": "={{ $('Firm - Disclosures').item.json.etl_creation_date }}"
-          },
-          "matchingColumns": [
-            "firm_source_id"
-          ],
-          "schema": [
-            {
-              "id": "firm_source_id",
-              "displayName": "firm_source_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "url",
-              "displayName": "url",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "file_last_modified_date",
-              "displayName": "file_last_modified_date",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "etl_creation_date",
-              "displayName": "etl_creation_date",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "etl_last_update_date",
-              "displayName": "etl_last_update_date",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "file_size",
-              "displayName": "file_size",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "status",
-              "displayName": "status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        1040,
-        -32
-      ],
-      "id": "8575f2d1-c521-437e-a74c-01b587d54853",
-      "name": "Update the Individual Disclosures Details",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "n3w79vnRP5x9wy2A",
-          "name": "Google Sheets OAuth2 API"
-        }
-      }
-    },
-    {
-      "parameters": {
         "rule": {
           "interval": [
             {
@@ -143,14 +24,14 @@
       "parameters": {
         "sendTo": "Waqas@kavtech.net",
         "subject": "=Update on Multiple Disclosures",
-        "message": "=<p>Hello Ahmed,</p>\n<p>I hope you're doing well!</p>\n<p>The following updates have been processed for both firms/individuals on FINRA - BrokerCheck:</p>\n\n<h3 style=\"color: #2c3e50;\">FIRM DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>CRD No.</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $item(0).$json.firm_data.map(item => `\n      <tr>\n        <td>${item.firm_source_id}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<br>\n\n<h3 style=\"color: #2c3e50;\">INDIVIDUAL DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>CRD No.</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $item(1).$json.individual_data.map(item => `\n      <tr>\n        <td>${item.ind_source_id}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<p style=\"margin-top: 20px;\">Best Regards,<br><strong>Ahmed Shafique</strong></p>\n",
+        "message": "=<p>Hello Waqas,</p>\n<p>I hope you're doing well!</p>\n<p>The following updates have been processed for both firms/individuals on FINRA - BrokerCheck:</p>\n\n<h3 style=\"color: #2c3e50;\">FIRM DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>CRD No.</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $item(0).$json.firm_data.map(item => `\n      <tr>\n        <td>${item.firm_source_id}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<br>\n<h3 style=\"color: #2c3e50;\">INDIVIDUAL DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>CRD No.</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $item(1).$json.individual_data.map(item => `\n      <tr>\n        <td>${item.ind_source_id}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n\n<p style=\"margin-top: 20px;\">Best Regards,<br><strong>Ahmed Shafique</strong></p>\n",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        1744,
-        64
+        2688,
+        672
       ],
       "id": "f97b90c4-c680-44e1-a721-6da67436555e",
       "name": "Send a message",
@@ -212,6 +93,13 @@
           "cachedResultName": "Firm - Disclosures",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=16738542"
         },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status"
+            }
+          ]
+        },
         "options": {}
       },
       "type": "n8n-nodes-base.googleSheets",
@@ -267,6 +155,11 @@
         "method": "HEAD",
         "url": "={{ $json.url }}",
         "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1
+            }
+          },
           "response": {
             "response": {
               "fullResponse": true,
@@ -557,6 +450,328 @@
       ],
       "id": "d54c42c2-0adf-438f-a489-329f92239dbf",
       "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 16738542,
+          "mode": "list",
+          "cachedResultName": "Firm - Disclosures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=16738542"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "firm_source_id": "={{ $('Firm - Disclosures').item.json.firm_source_id }}",
+            "file_last_modified_date": "={{ $json.headers[\"last-modified\"] }}",
+            "etl_last_update_date": "={{ new Date().toISOString() }}",
+            "url": "={{ $('Firm - Disclosures').item.json.url }}",
+            "etl_creation_date": "={{ $('Firm - Disclosures').item.json.etl_creation_date }}"
+          },
+          "matchingColumns": [
+            "firm_source_id"
+          ],
+          "schema": [
+            {
+              "id": "firm_source_id",
+              "displayName": "firm_source_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "file_last_modified_date",
+              "displayName": "file_last_modified_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etl_creation_date",
+              "displayName": "etl_creation_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "etl_last_update_date",
+              "displayName": "etl_last_update_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "file_size",
+              "displayName": "file_size",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1040,
+        -32
+      ],
+      "id": "8575f2d1-c521-437e-a74c-01b587d54853",
+      "name": "Update the Firm Disclosures Details",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n3w79vnRP5x9wy2A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1728,
+        192
+      ],
+      "id": "c718eea7-2966-4847-95ab-cc4b770517e2",
+      "name": "Loop Over Items",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d04ccfd7-5309-4c02-a2dc-54a2790f57c6",
+              "name": "individual_data[0].ind_source_id",
+              "value": "={{ $json.individual_data[0].ind_source_id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1984,
+        208
+      ],
+      "id": "dae06b87-4b10-4ec4-b027-65b40316a1cb",
+      "name": "source_id"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1652171982,
+          "mode": "list",
+          "cachedResultName": "BrokerCheck - Individual",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1652171982"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "ind_source_id",
+              "lookupValue": "={{ $json.individual_data[0].ind_source_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2192,
+        208
+      ],
+      "id": "6708c863-86e8-4992-b56b-921fea1cd24c",
+      "name": "ind -details",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n3w79vnRP5x9wy2A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f338a86-1a55-4f23-a48b-42b24eba309f",
+              "name": "ind_current_employments",
+              "value": "={{ $json.ind_current_employments }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2400,
+        208
+      ],
+      "id": "b3e774de-29c8-430e-a477-7c8b64cbcd3d",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5a0eb032-02c2-461c-b4ae-71c25ccb065b",
+              "name": "parsed-employees",
+              "value": "={{ JSON.parse($json.ind_current_employments) }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2608,
+        208
+      ],
+      "id": "df49d87e-d1b9-41bb-949c-9750b43fce39",
+      "name": "parsed - employees"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1764871148,
+          "mode": "list",
+          "cachedResultName": "Relation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1764871148"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "firm_id": "={{ $json[\"parsed-employees\"][0].firm_id }}",
+            "firm_name": "={{ $json[\"parsed-employees\"][0].firm_name }}",
+            "ind_source_id": "={{ $('source_id').item.json.individual_data[0].ind_source_id }}"
+          },
+          "matchingColumns": [
+            "firm_id"
+          ],
+          "schema": [
+            {
+              "id": "firm_id",
+              "displayName": "firm_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firm_name",
+              "displayName": "firm_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ind_source_id",
+              "displayName": "ind_source_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2816,
+        208
+      ],
+      "id": "95317fa0-a90e-420e-8ebe-409c5365cb20",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n3w79vnRP5x9wy2A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -571,17 +786,6 @@
           },
           {
             "node": "Firm - Disclosures",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update the Individual Disclosures Details": {
-      "main": [
-        [
-          {
-            "node": "Firm - Details",
             "type": "main",
             "index": 0
           }
@@ -648,7 +852,7 @@
       "main": [
         [
           {
-            "node": "Update the Individual Disclosures Details",
+            "node": "Update the Firm Disclosures Details",
             "type": "main",
             "index": 0
           }
@@ -715,7 +919,7 @@
       "main": [
         [
           {
-            "node": "Send a message",
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
@@ -726,6 +930,84 @@
       "main": [
         []
       ]
+    },
+    "Update the Firm Disclosures Details": {
+      "main": [
+        [
+          {
+            "node": "Firm - Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "source_id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "source_id": {
+      "main": [
+        [
+          {
+            "node": "ind -details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ind -details": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "parsed - employees",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parsed - employees": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -734,7 +1016,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "f29d5acd-1733-4f22-87b4-78eeab916cf7",
+  "versionId": "28e37607-6d3f-494c-8116-e6b432931b8a",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8c4094288bc40d778d7d20f7876f715992b37f265e351137fef3b2ada953980a"
