@@ -84,6 +84,12 @@
               "name": "etl_update_date",
               "value": "={{ new Date().toISOString() }}",
               "type": "string"
+            },
+            {
+              "id": "9c71d8c4-3e6b-46ae-9e91-6dabace49fd4",
+              "name": "individual_name",
+              "value": "={{ $('Read Individual - Details').item.json.ind_firstname }} {{ $('Read Individual - Details').item.json.ind_middlename }} {{ $('Read Individual - Details').item.json.ind_lastname }}",
+              "type": "string"
             }
           ]
         },
@@ -311,7 +317,8 @@
             "ind_source_id": "={{ $('Arrange Parameters').item.json.ind_source_id }}",
             "firm_id": "={{ $json.parsed_employees[0].firm_id }}",
             "firm_name": "={{ $json.parsed_employees[0].firm_name }}",
-            "status": "={{ $json.error.status }}"
+            "status": "={{ $json.error.status }}",
+            "individual_name": "={{ $('Arrange Parameters').item.json.individual_name }}"
           },
           "matchingColumns": [
             "ind_source_id"
@@ -400,6 +407,16 @@
             {
               "id": "firm_name",
               "displayName": "firm_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "individual_name",
+              "displayName": "individual_name",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -490,7 +507,8 @@
             "file_last_modified_date": "={{ $('Fetch MetaData').item.json.headers[\"last-modified\"] }}",
             "file_size": "={{ $json.filesize }}",
             "firm_id": "={{ $json.parsed_employees[0].firm_id }}",
-            "firm_name": "={{ $json.parsed_employees[0].firm_name }}"
+            "firm_name": "={{ $json.parsed_employees[0].firm_name }}",
+            "individual_name": "={{ $('Arrange Parameters').item.json.individual_name }}"
           },
           "matchingColumns": [
             "ind_source_id"
@@ -579,6 +597,16 @@
             {
               "id": "firm_name",
               "displayName": "firm_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "individual_name",
+              "displayName": "individual_name",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -771,7 +799,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "6849fcdd-3b05-49ec-944f-8dd10619ca1b",
+  "versionId": "e5e57693-60cf-4afe-97f4-c1fcc2747248",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "b48f0b592d7fbc9ba14f4ca684b9d716f976ced5dafc7df6d058c1e7472a5e8b"
