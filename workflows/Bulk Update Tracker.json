@@ -244,7 +244,8 @@
             "file_size": "={{ $('Individual - Disclosures').item.json.file_size }}",
             "url": "={{ $('Individual - Disclosures').item.json.url }}",
             "firm_id": "={{ $('Individual - Disclosures').item.json.firm_id }}",
-            "firm_name": "={{ $('Individual - Disclosures').item.json.firm_name }}"
+            "firm_name": "={{ $('Individual - Disclosures').item.json.firm_name }}",
+            "individual_name": "={{ $('Individual - Disclosures').item.json.individual_name }}"
           },
           "matchingColumns": [
             "ind_source_id"
@@ -337,6 +338,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "individual_name",
+              "displayName": "individual_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -393,7 +404,9 @@
       "parameters": {
         "mode": "combine",
         "combineBy": "combineByPosition",
-        "options": {}
+        "options": {
+          "includeUnpaired": true
+        }
       },
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
@@ -402,7 +415,8 @@
         144
       ],
       "id": "424ebe07-dc7c-44fc-a1bf-e28d1b24df15",
-      "name": "Merge"
+      "name": "Merge",
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -643,7 +657,7 @@
       "parameters": {
         "sendTo": "2021ee313@student.uet.edu.pk",
         "subject": "=Update on Multiple Disclosures",
-        "message": "=<p>Hello Waqas,</p>\n<p>I hope you're doing well!</p>\n<p>The following updates have been processed for both firms/individuals on FINRA - BrokerCheck:</p>\n\n<br>\n<h3 style=\"color: #2c3e50;\">INDIVIDUAL DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>CRD No.</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $json.individual_data.map(item => `\n      <tr>\n        <td>${item.ind_source_id}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<p style=\"margin-top: 20px;\">Best Regards,<br><strong>Ahmed Shafique</strong></p>",
+        "message": "=<p>Hello Waqas,</p>\n<p>I hope you're doing well!</p>\n<p>The following updates have been processed for both firms/individuals on FINRA - BrokerCheck:</p>\n\n<br>\n<h3 style=\"color: #2c3e50;\">INDIVIDUAL DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>Individual CRD No.</th>\n      <th>Employee Firm ID</th>\n      <th>Employee Firm Name</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $json.individual_data.map(item => `\n      <tr>\n        <td>${item.ind_source_id}</td>\n        <td>${item.firm_id}</td>\n        <td>${item.firm_name}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<p style=\"margin-top: 20px;\">Best Regards,<br><strong>Ahmed Shafique</strong></p>",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
@@ -667,7 +681,7 @@
       "parameters": {
         "sendTo": "2021ee313@student.uet.edu.pk",
         "subject": "=Update on Multiple Disclosures",
-        "message": "=<p>Hello Waqas,</p>\n<p>I hope you're doing well!</p>\n<p>The following updates have been processed for both firms/individuals on FINRA - BrokerCheck:</p>\n\n<h3 style=\"color: #2c3e50;\">FIRM DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>CRD No.</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $json.firm_data.map(item => `\n      <tr>\n        <td>${item.firm_source_id}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<br>\n<h3 style=\"color: #2c3e50;\">INDIVIDUAL DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>CRD No.</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $json.individual_data.map(item => `\n      <tr>\n        <td>${item.ind_source_id}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<p style=\"margin-top: 20px;\">Best Regards,<br><strong>Ahmed Shafique</strong></p>",
+        "message": "=<p>Hello Waqas,</p>\n<p>I hope you're doing well!</p>\n<p>The following updates have been processed for both firms/individuals on FINRA - BrokerCheck:</p>\n\n<h3 style=\"color: #2c3e50;\">FIRM DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>CRD No.</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $json.firm_data.map(item => `\n      <tr>\n        <td>${item.firm_source_id}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<br>\n<h3 style=\"color: #2c3e50;\">INDIVIDUAL DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>Individual CRD No.</th>\n      <th>Individual Name</th>\n      <th>Employee Firm ID</th>\n      <th>Employee Firm Name</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $json.individual_data.map(item => `\n      <tr>\n        <td>${item.ind_source_id}</td>\n        <td>${item.individual_name}</td>\n        <td>${item.firm_id}</td>\n        <td>${item.firm_name}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<p style=\"margin-top: 20px;\">Best Regards,<br><strong>Ahmed Shafique</strong></p>",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
@@ -858,7 +872,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "cb6fba51-9522-45ec-bb21-347ceb6d3478",
+  "versionId": "37f62433-a6f8-46e3-9410-23e7a980ed1b",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "b48f0b592d7fbc9ba14f4ca684b9d716f976ced5dafc7df6d058c1e7472a5e8b"
