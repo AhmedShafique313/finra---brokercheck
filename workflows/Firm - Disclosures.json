@@ -10,10 +10,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        656,
+        480,
         144
       ],
-      "id": "4ac6022a-2773-42d0-b761-b0efcf2df23d",
+      "id": "a48dd97a-9c9e-423c-82fd-4d0956b8ea6b",
       "name": "Merge"
     },
     {
@@ -48,11 +48,11 @@
         0,
         0
       ],
-      "id": "c55cf4bd-387c-4c53-8880-dd57efb5f3e7",
+      "id": "22f35644-daf1-40f1-a1dd-b111f9223390",
       "name": "Read Individual - Details",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "n3w79vnRP5x9wy2A",
+          "id": "T8DhMidOvgrb7oMz",
           "name": "Google Sheets OAuth2 API"
         }
       }
@@ -84,6 +84,12 @@
               "name": "etl_update_date",
               "value": "={{ new Date().toISOString() }}",
               "type": "string"
+            },
+            {
+              "id": "3825dd9c-98c9-4015-b963-cbc42a0ea6d3",
+              "name": "firm_name",
+              "value": "={{ $json.firm_name }}",
+              "type": "string"
             }
           ]
         },
@@ -92,10 +98,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        416,
+        240,
         0
       ],
-      "id": "95b6360a-f2f0-4da8-86fd-d3682aa24f8a",
+      "id": "c2c02138-122d-42b3-8f2b-1f8a6926da0e",
       "name": "Arrange Parameters"
     },
     {
@@ -125,11 +131,11 @@
         0,
         192
       ],
-      "id": "3618524c-d952-4927-be66-12e313198168",
+      "id": "a259eb1a-669f-4113-891d-47c8b55340b7",
       "name": "Read - Disclosures",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "n3w79vnRP5x9wy2A",
+          "id": "T8DhMidOvgrb7oMz",
           "name": "Google Sheets OAuth2 API"
         }
       }
@@ -147,6 +153,12 @@
           ]
         },
         "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 10,
+              "batchInterval": 100
+            }
+          },
           "response": {
             "response": {
               "fullResponse": true
@@ -157,10 +169,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1072,
+        688,
         144
       ],
-      "id": "c28ff581-e585-4dea-bc80-e1868f80a0c1",
+      "id": "172d5ced-3d68-4ffd-9721-365afe7b764b",
       "name": "Fetch MetaData",
       "alwaysOutputData": false,
       "onError": "continueRegularOutput"
@@ -185,13 +197,14 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "firm_source_id": "={{ $('Limit').item.json.firm_source_id }}",
-            "url": "={{ $('Limit').item.json.url }}",
-            "etl_creation_date": "={{ $('Limit').item.json.etl_creation_date }}",
-            "etl_last_update_date": "={{ $('Limit').item.json.etl_update_date }}",
+            "firm_source_id": "={{ $('Arrange Parameters').item.json.firm_source_id }}",
+            "url": "={{ $('Arrange Parameters').item.json.url }}",
+            "etl_creation_date": "={{ $('Arrange Parameters').item.json.etl_creation_date }}",
+            "etl_last_update_date": "={{ $('Arrange Parameters').item.json.etl_update_date }}",
             "status": "={{ $json.error.status }}",
             "file_last_modified_date": "={{ $('Fetch MetaData').item.json.headers[\"last-modified\"] }}",
-            "file_size": "={{ $json.filesize }}"
+            "file_size": "={{ $json.filesize }}",
+            "firm_name": "={{ $('Arrange Parameters').item.json.firm_name }}"
           },
           "matchingColumns": [
             "firm_source_id"
@@ -266,6 +279,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "firm_name",
+              "displayName": "firm_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -276,28 +299,17 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1472,
+        1072,
         144
       ],
-      "id": "d6c4e29f-2e4b-4bef-87a1-1fc2277ebe7f",
+      "id": "aa66928c-d8e1-4d3f-b44d-cea153ff5aac",
       "name": "Update - Individual Disclosures",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "n3w79vnRP5x9wy2A",
+          "id": "T8DhMidOvgrb7oMz",
           "name": "Google Sheets OAuth2 API"
         }
       }
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.limit",
-      "typeVersion": 1,
-      "position": [
-        864,
-        144
-      ],
-      "id": "1acc8a8a-80aa-4ce3-8b80-c55495035874",
-      "name": "Limit"
     },
     {
       "parameters": {
@@ -322,10 +334,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1280,
+        880,
         144
       ],
-      "id": "3e632017-b29c-456e-9fdb-dd3c626be670",
+      "id": "1448622b-d871-4926-8cc3-2fb2dafe0696",
       "name": "Edit Fields",
       "onError": "continueRegularOutput"
     },
@@ -345,23 +357,8 @@
         -272,
         80
       ],
-      "id": "b367fab6-62ca-4269-8986-8bb772e71044",
+      "id": "f6a6e80e-06dc-4aac-b4c2-08d6b8d53a52",
       "name": "Schedule Trigger"
-    },
-    {
-      "parameters": {
-        "compare": "selectedFields",
-        "fieldsToCompare": "firm_source_id",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.removeDuplicates",
-      "typeVersion": 2,
-      "position": [
-        208,
-        0
-      ],
-      "id": "b4991f95-dfb2-4c6e-9dbb-aa24431cfc20",
-      "name": "Remove Same firm_source_id"
     }
   ],
   "pinData": {},
@@ -370,7 +367,7 @@
       "main": [
         [
           {
-            "node": "Limit",
+            "node": "Fetch MetaData",
             "type": "main",
             "index": 0
           }
@@ -381,7 +378,7 @@
       "main": [
         [
           {
-            "node": "Remove Same firm_source_id",
+            "node": "Arrange Parameters",
             "type": "main",
             "index": 0
           }
@@ -421,17 +418,6 @@
         ]
       ]
     },
-    "Limit": {
-      "main": [
-        [
-          {
-            "node": "Fetch MetaData",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Edit Fields": {
       "main": [
         [
@@ -458,30 +444,18 @@
           }
         ]
       ]
-    },
-    "Remove Same firm_source_id": {
-      "main": [
-        [
-          {
-            "node": "Arrange Parameters",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": false
+    "binaryMode": "separate"
   },
-  "versionId": "e44946e9-8764-48a7-a7b1-1f03e9b2fc93",
+  "versionId": "ff347efd-ae20-484f-884f-a3b539524444",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "8c4094288bc40d778d7d20f7876f715992b37f265e351137fef3b2ada953980a"
+    "instanceId": "b48f0b592d7fbc9ba14f4ca684b9d716f976ced5dafc7df6d058c1e7472a5e8b"
   },
-  "id": "Zcapf9mwRuQoV7fz",
+  "id": "KbhypodLoPCws4ip",
   "tags": []
 }
