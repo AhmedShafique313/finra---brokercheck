@@ -14,391 +14,11 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -592,
-        128
+        -224,
+        272
       ],
       "id": "5162f438-76a1-43b2-88c5-9c0210489615",
       "name": "Schedule Trigger"
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
-          "mode": "list",
-          "cachedResultName": "N8N - Project All Records",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 16738542,
-          "mode": "list",
-          "cachedResultName": "Firm - Disclosures",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=16738542"
-        },
-        "filtersUI": {
-          "values": [
-            {
-              "lookupColumn": "status"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        -208,
-        16
-      ],
-      "id": "8d649702-33af-4527-8e18-dce4c92b6cfe",
-      "name": "Firm - Disclosures",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "T8DhMidOvgrb7oMz",
-          "name": "Google Sheets OAuth2 API"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
-          "mode": "list",
-          "cachedResultName": "N8N - Project All Records",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 1821406224,
-          "mode": "list",
-          "cachedResultName": "Individual - Disclosures",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1821406224"
-        },
-        "filtersUI": {
-          "values": [
-            {
-              "lookupColumn": "status"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        -208,
-        256
-      ],
-      "id": "1a3d4d58-8eea-488b-93bd-7389fef40cb1",
-      "name": "Individual - Disclosures",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "T8DhMidOvgrb7oMz",
-          "name": "Google Sheets OAuth2 API"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "method": "HEAD",
-        "url": "={{ $json.url }}",
-        "options": {
-          "batching": {
-            "batch": {
-              "batchSize": 1
-            }
-          },
-          "response": {
-            "response": {
-              "fullResponse": true,
-              "responseFormat": "json"
-            }
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.4,
-      "position": [
-        0,
-        16
-      ],
-      "id": "ff520610-3591-409d-ad38-d49cd40d0a5c",
-      "name": "Firm - MetaData",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "method": "HEAD",
-        "url": "={{ $json.url }}",
-        "options": {
-          "response": {
-            "response": {
-              "fullResponse": true,
-              "responseFormat": "json"
-            }
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.4,
-      "position": [
-        0,
-        256
-      ],
-      "id": "f2b44a1f-764b-4317-9249-98e3a3802115",
-      "name": "Individual - MetaData",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "d432c05e-bfac-44ce-a0a7-2029d6821dd0",
-              "leftValue": "={{ $json.headers[\"last-modified\"] }}",
-              "rightValue": "={{ $('Firm - Disclosures').item.json.file_last_modified_date }}",
-              "operator": {
-                "type": "dateTime",
-                "operation": "notEquals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.3,
-      "position": [
-        208,
-        16
-      ],
-      "id": "360642eb-a3db-4a24-b8ca-af86659f87bd",
-      "name": "Firm - Last Modification"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "d432c05e-bfac-44ce-a0a7-2029d6821dd0",
-              "leftValue": "={{ $json.headers[\"last-modified\"] }}",
-              "rightValue": "={{ $('Individual - Disclosures').item.json.file_last_modified_date }}",
-              "operator": {
-                "type": "dateTime",
-                "operation": "notEquals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.3,
-      "position": [
-        208,
-        256
-      ],
-      "id": "df880aa6-3dee-4f36-adc5-40bad31ae118",
-      "name": "Individual - Last Modification"
-    },
-    {
-      "parameters": {
-        "operation": "appendOrUpdate",
-        "documentId": {
-          "__rl": true,
-          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
-          "mode": "list",
-          "cachedResultName": "N8N - Project All Records",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 1821406224,
-          "mode": "list",
-          "cachedResultName": "Individual - Disclosures",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1821406224"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "file_last_modified_date": "={{ $json.headers[\"last-modified\"] }}",
-            "etl_last_update_date": "={{ new Date().toISOString() }}",
-            "ind_source_id": "={{ $('Individual - Disclosures').item.json.ind_source_id }}",
-            "etl_creation_date": "={{ $('Individual - Disclosures').item.json.etl_creation_date }}",
-            "file_size": "={{ $('Individual - Disclosures').item.json.file_size }}",
-            "url": "={{ $('Individual - Disclosures').item.json.url }}",
-            "firm_id": "={{ $('Individual - Disclosures').item.json.firm_id }}",
-            "firm_name": "={{ $('Individual - Disclosures').item.json.firm_name }}",
-            "individual_name": "={{ $('Individual - Disclosures').item.json.individual_name }}"
-          },
-          "matchingColumns": [
-            "ind_source_id"
-          ],
-          "schema": [
-            {
-              "id": "ind_source_id",
-              "displayName": "ind_source_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "url",
-              "displayName": "url",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "file_last_modified_date",
-              "displayName": "file_last_modified_date",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "etl_creation_date",
-              "displayName": "etl_creation_date",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "etl_last_update_date",
-              "displayName": "etl_last_update_date",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "file_size",
-              "displayName": "file_size",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "status",
-              "displayName": "status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "firm_id",
-              "displayName": "firm_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "firm_name",
-              "displayName": "firm_name",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "individual_name",
-              "displayName": "individual_name",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        432,
-        256
-      ],
-      "id": "930e1987-9663-4d0d-9dc2-3f50a4134ddb",
-      "name": "Update the Individual Disclosures Details1",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "T8DhMidOvgrb7oMz",
-          "name": "Google Sheets OAuth2 API"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "aggregate": "aggregateAllItemData",
-        "destinationFieldName": "firm_data",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        624,
-        16
-      ],
-      "id": "30520113-f16e-49ae-b574-a30364d20083",
-      "name": "Firm - Details"
-    },
-    {
-      "parameters": {
-        "aggregate": "aggregateAllItemData",
-        "destinationFieldName": "individual_data",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        624,
-        256
-      ],
-      "id": "1cb3fb66-58c4-4db5-b6f9-97b4d9e65734",
-      "name": "Individual - Details"
     },
     {
       "parameters": {
@@ -411,131 +31,12 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        864,
-        144
+        608,
+        272
       ],
       "id": "424ebe07-dc7c-44fc-a1bf-e28d1b24df15",
       "name": "Merge",
       "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "operation": "appendOrUpdate",
-        "documentId": {
-          "__rl": true,
-          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
-          "mode": "list",
-          "cachedResultName": "N8N - Project All Records",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 16738542,
-          "mode": "list",
-          "cachedResultName": "Firm - Disclosures",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=16738542"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "firm_source_id": "={{ $('Firm - Disclosures').item.json.firm_source_id }}",
-            "file_last_modified_date": "={{ $json.headers[\"last-modified\"] }}",
-            "etl_last_update_date": "={{ new Date().toISOString() }}",
-            "url": "={{ $('Firm - Disclosures').item.json.url }}",
-            "etl_creation_date": "={{ $('Firm - Disclosures').item.json.etl_creation_date }}"
-          },
-          "matchingColumns": [
-            "firm_source_id"
-          ],
-          "schema": [
-            {
-              "id": "firm_source_id",
-              "displayName": "firm_source_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "url",
-              "displayName": "url",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "file_last_modified_date",
-              "displayName": "file_last_modified_date",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "etl_creation_date",
-              "displayName": "etl_creation_date",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "etl_last_update_date",
-              "displayName": "etl_last_update_date",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "file_size",
-              "displayName": "file_size",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "status",
-              "displayName": "status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        432,
-        16
-      ],
-      "id": "15d97996-ec17-4173-a72b-4702b7099202",
-      "name": "Update the Firm Disclosures Details",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "T8DhMidOvgrb7oMz",
-          "name": "Google Sheets OAuth2 API"
-        }
-      }
     },
     {
       "parameters": {
@@ -623,75 +124,245 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        1120,
-        128
+        832,
+        256
       ],
       "id": "13259269-4334-44a0-b112-f0e635e39966",
       "name": "Switch"
     },
     {
       "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 16738542,
+          "mode": "list",
+          "cachedResultName": "Firm - Disclosures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=16738542"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "EMAIL",
+              "lookupValue": "Y"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        160
+      ],
+      "id": "1db1320d-4ac0-4c6e-a562-b132c85613c1",
+      "name": "Firm - Y",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "T8DhMidOvgrb7oMz",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A",
+          "mode": "list",
+          "cachedResultName": "N8N - Project All Records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1821406224,
+          "mode": "list",
+          "cachedResultName": "Individual - Disclosures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLxYqioeqEWEPDYa7w6lATjVObjUBflVxlpPBM1fR0A/edit#gid=1821406224"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Email",
+              "lookupValue": "Y"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        384
+      ],
+      "id": "7ff2ca73-1620-4386-84fd-1f0f0844a63c",
+      "name": "Individual - Y",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "T8DhMidOvgrb7oMz",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "firm_data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        368,
+        160
+      ],
+      "id": "30520113-f16e-49ae-b574-a30364d20083",
+      "name": "firm_data"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "individual_data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        368,
+        384
+      ],
+      "id": "1cb3fb66-58c4-4db5-b6f9-97b4d9e65734",
+      "name": "individual_data"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f8779ccd-a948-410f-a8d1-29f605f9f31a",
+              "name": "firm_count",
+              "value": "={{ $input.all().length }}",
+              "type": "number"
+            },
+            {
+              "id": "393b6207-4371-470e-9cff-afe81eeeba77",
+              "name": "firm_source_id",
+              "value": "={{ $json.firm_source_id }}",
+              "type": "number"
+            },
+            {
+              "id": "edb18eb9-2d25-4c8a-bf09-01213141ba4c",
+              "name": "url",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "a3636c51-ab4a-4e17-a0d9-0160869450ae",
+              "name": "file_last_modified_date",
+              "value": "={{ $json.file_last_modified_date }}",
+              "type": "string"
+            },
+            {
+              "id": "e8b76d65-2045-493c-ac6f-77213e7ce597",
+              "name": "firm_name",
+              "value": "={{ $json.firm_name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        176,
+        160
+      ],
+      "id": "1e14e75a-1dcf-46c3-b2f9-b254b4b7f568",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f8779ccd-a948-410f-a8d1-29f605f9f31a",
+              "name": "ind_count",
+              "value": "={{ $input.all().length }}",
+              "type": "number"
+            },
+            {
+              "id": "3a1906ea-c20d-47bb-b8d7-8d05b74d2611",
+              "name": "ind_source_id",
+              "value": "={{ $json.ind_source_id }}",
+              "type": "number"
+            },
+            {
+              "id": "b185e86c-adaf-44d3-884e-9422be69075a",
+              "name": "url",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "97d5262c-c81d-4ff4-a1d5-ea8cf2d7e774",
+              "name": "file_last_modified_date",
+              "value": "={{ $json.file_last_modified_date }}",
+              "type": "string"
+            },
+            {
+              "id": "f264d3d3-a497-4e7b-93b4-9aa0a5ba9a4f",
+              "name": "employee_firm_id",
+              "value": "={{ $json.firm_id }}",
+              "type": "number"
+            },
+            {
+              "id": "56b477a0-99d4-46c7-9ae1-905d5cab2c64",
+              "name": "employee_firm_name",
+              "value": "={{ $json.firm_name }}",
+              "type": "string"
+            },
+            {
+              "id": "c292500c-0605-4ca7-a0c1-831761bb5136",
+              "name": "individual_name",
+              "value": "={{ $json.individual_name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        176,
+        384
+      ],
+      "id": "58278d77-9555-439d-8cf9-2c650de3c43f",
+      "name": "rearrange-individuals"
+    },
+    {
+      "parameters": {
         "sendTo": "2021ee313@student.uet.edu.pk",
         "subject": "=Update on Multiple Disclosures",
-        "message": "=<p>Hello Waqas,</p>\n<p>I hope you're doing well!</p>\n<p>The following updates have been processed for both firms/individuals on FINRA - BrokerCheck:</p>\n\n<h3 style=\"color: #2c3e50;\">FIRM DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>CRD No.</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $json.firm_data.map(item => `\n      <tr>\n        <td>${item.firm_source_id}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<br>\n\n\n<p style=\"margin-top: 20px;\">Best Regards,<br><strong>Ahmed Shafique</strong></p>",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Disclosure Updates Report</title>\n<style>\n\n  * {\n\n    margin: 0;\n\n    padding: 0;\n\n    box-sizing: border-box;\n\n  }\n\n  body {\n\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;\n\n    line-height: 1.6;\n\n    color: #1a1a1a;\n\n    background-color: #f4f7fc;\n\n  }\n\n  .container {\n\n    max-width: 1000px;\n\n    margin: 20px auto;\n\n    background: #ffffff;\n\n    border-radius: 16px;\n\n    overflow: hidden;\n\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n\n  }\n\n  .header {\n\n    background: linear-gradient(135deg, #0c4e6e 0%, #1a6d8f 100%);\n\n    padding: 32px 40px;\n\n    text-align: center;\n\n  }\n\n  .header h1 {\n\n    color: #ffffff;\n\n    font-size: 28px;\n\n    font-weight: 600;\n\n    margin: 0;\n\n  }\n\n  .header p {\n\n    color: #cce7f0;\n\n    font-size: 14px;\n\n    margin-top: 8px;\n\n  }\n\n  .content {\n\n    padding: 40px;\n\n  }\n\n  .greeting {\n\n    margin-bottom: 28px;\n\n  }\n\n  .greeting h2 {\n\n    color: #0c4e6e;\n\n    font-size: 20px;\n\n    font-weight: 600;\n\n    margin-bottom: 12px;\n\n  }\n\n  .greeting p {\n\n    color: #4a5568;\n\n    font-size: 16px;\n\n    margin-bottom: 8px;\n\n  }\n\n  .update-badge {\n\n    background: #fee2e2;\n\n    border-left: 4px solid #dc2626;\n\n    padding: 16px 20px;\n\n    margin: 24px 0;\n\n    border-radius: 10px;\n\n  }\n\n  .update-badge p {\n\n    color: #991b1b;\n\n    font-size: 15px;\n\n    margin: 0;\n\n    font-weight: 500;\n\n  }\n\n  .data-section {\n\n    margin: 32px 0;\n\n  }\n\n  .data-section h3 {\n\n    color: #0c4e6e;\n\n    font-size: 18px;\n\n    font-weight: 600;\n\n    margin-bottom: 16px;\n\n    border-bottom: 2px solid #e2e8f0;\n\n    padding-bottom: 8px;\n\n  }\n\n  .firm-table {\n\n    width: 100%;\n\n    border-collapse: collapse;\n\n    background: #ffffff;\n\n    border-radius: 12px;\n\n    overflow: hidden;\n\n    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);\n\n  }\n\n  .firm-table th {\n\n    background: #f7fafc;\n\n    color: #1a202c;\n\n    font-weight: 600;\n\n    font-size: 13px;\n\n    text-transform: uppercase;\n\n    letter-spacing: 0.5px;\n\n    padding: 14px 16px;\n\n    text-align: left;\n\n    border-bottom: 2px solid #e2e8f0;\n\n  }\n\n  .firm-table td {\n\n    padding: 12px 16px;\n\n    color: #2d3748;\n\n    font-size: 14px;\n\n    border-bottom: 1px solid #edf2f7;\n\n  }\n\n  .firm-table tr:last-child td {\n\n    border-bottom: none;\n\n  }\n\n  .firm-table tr:hover {\n\n    background-color: #f7fafc;\n\n  }\n\n  .individual-table {\n\n    width: 100%;\n\n    border-collapse: collapse;\n\n    background: #ffffff;\n\n    border-radius: 12px;\n\n    overflow-x: auto;\n\n    display: block;\n\n  }\n\n  .individual-table th {\n\n    background: #f7fafc;\n\n    color: #1a202c;\n\n    font-weight: 600;\n\n    font-size: 13px;\n\n    text-transform: uppercase;\n\n    letter-spacing: 0.5px;\n\n    padding: 14px 12px;\n\n    text-align: left;\n\n    border-bottom: 2px solid #e2e8f0;\n\n  }\n\n  .individual-table td {\n\n    padding: 12px 12px;\n\n    color: #2d3748;\n\n    font-size: 14px;\n\n    border-bottom: 1px solid #edf2f7;\n\n  }\n\n  .individual-table tr:last-child td {\n\n    border-bottom: none;\n\n  }\n\n  .individual-table tr:hover {\n\n    background-color: #f7fafc;\n\n  }\n\n  .firm-link, .individual-link {\n\n    color: #1a6d8f;\n\n    text-decoration: none;\n\n    font-weight: 500;\n\n  }\n\n  .firm-link:hover, .individual-link:hover {\n\n    text-decoration: underline;\n\n  }\n\n  .footer {\n\n    background: #f8fafc;\n\n    padding: 28px 40px;\n\n    border-top: 1px solid #e2e8f0;\n\n    text-align: center;\n\n  }\n\n  .footer p {\n\n    color: #64748b;\n\n    font-size: 13px;\n\n    margin: 4px 0;\n\n  }\n\n  .signature {\n\n    margin-top: 16px;\n\n    color: #0c4e6e;\n\n    font-weight: 500;\n\n  }\n\n  .timestamp {\n\n    font-size: 11px;\n\n    color: #94a3b8;\n\n    margin-top: 12px;\n\n  }\n\n  @media (max-width: 700px) {\n\n    .content, .header, .footer {\n\n      padding: 24px 20px;\n\n    }\n\n    .firm-table th, .firm-table td,\n\n    .individual-table th, .individual-table td {\n\n      padding: 8px 10px;\n\n      font-size: 12px;\n\n    }\n\n  }\n</style>\n</head>\n<body>\n<div class=\"container\">\n<div class=\"header\">\n<h1>📋 Disclosure Updates Report</h1>\n</div>\n<div class=\"content\">\n<div class=\"greeting\">\n<h2>Hello Waqas,</h2>\n<p>Hope you're doing well! Here's your daily update on entities where disclosure files have been modified:</p>\n</div>\n<!-- FIRM DISCLOSURES SECTION -->\n<div class=\"update-badge\">\n<p>\n<span>⚠️</span>\n<strong>{{$json.firmChangedCount}} firms have updated disclosures</strong>\n</p>\n</div>\n<div class=\"data-section\">\n<h3>🏢 Firms with Updated Disclosures</h3>\n<table class=\"firm-table\">\n<thead>\n<tr>\n<th style=\"width: 20%\">Firm ID</th>\n<th style=\"width: 50%\">Firm Name</th>\n<th style=\"width: 30%\">Last Modified Date</th>\n</tr>\n</thead>\n<tbody>\n\n          {{$json.firmTableRows}}\n</tbody>\n</table>\n</div>\n<!-- INDIVIDUAL DISCLOSURES SECTION -->\n<div class=\"update-badge\">\n<p>\n<span>⚠️</span>\n<strong>{{ $json.individualTotalCount }} individuals have updated disclosures</strong>\n</p>\n</div>\n<div class=\"data-section\">\n<h3>👥 Individuals with Updated Disclosures</h3>\n<table class=\"individual-table\">\n<thead>\n<tr>\n<th style=\"width: 15%\">Individual ID</th>\n<th style=\"width: 25%\">Individual Name</th>\n<th style=\"width: 15%\">Firm ID</th>\n<th style=\"width: 25%\">Firm Name</th>\n<th style=\"width: 20%\">Last Modified Date</th>\n</tr>\n</thead>\n<tbody>\n\n          {{$json.individualTableRows}}\n</tbody>\n</table>\n</div>\n</div>\n<div class=\"footer\">\n<div class=\"signature\">\n<p>Best regards,</p>\n<p><strong>Ahmed Shafique</strong></p>\n</div>\n<div class=\"timestamp\">\n\n      Report generated: {{$now.format('MM-DD HH:mm:ss')}}\n</div>\n<p style=\"font-size: 11px; margin-top: 12px;\">© 2026 • Automated Disclosure Tracker</p>\n</div>\n</div>\n</body>\n</html>\n ",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
         1344,
-        -48
-      ],
-      "id": "4dd1a3f7-5880-4f17-ac7c-10bdc5d2e62f",
-      "name": "Email - Firm Details",
-      "webhookId": "28ad3e75-f38d-4a53-a6b7-1358a881070c",
-      "executeOnce": true,
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "8cwObLkaOw3zcqxy",
-          "name": "Gmail OAuth2 API"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "sendTo": "2021ee313@student.uet.edu.pk",
-        "subject": "=Update on Multiple Disclosures",
-        "message": "=<p>Hello Waqas,</p>\n<p>I hope you're doing well!</p>\n<p>The following updates have been processed for both firms/individuals on FINRA - BrokerCheck:</p>\n\n<br>\n<h3 style=\"color: #2c3e50;\">INDIVIDUAL DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>Individual CRD No.</th>\n      <th>Employee Firm ID</th>\n      <th>Employee Firm Name</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $json.individual_data.map(item => `\n      <tr>\n        <td>${item.ind_source_id}</td>\n        <td>${item.firm_id}</td>\n        <td>${item.firm_name}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<p style=\"margin-top: 20px;\">Best Regards,<br><strong>Ahmed Shafique</strong></p>",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.2,
-      "position": [
-        1488,
-        144
-      ],
-      "id": "943b2b40-c7aa-4811-b0c7-6ae4fff8843e",
-      "name": "Email - Individual Details",
-      "webhookId": "28ad3e75-f38d-4a53-a6b7-1358a881070c",
-      "executeOnce": true,
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "8cwObLkaOw3zcqxy",
-          "name": "Gmail OAuth2 API"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "sendTo": "2021ee313@student.uet.edu.pk",
-        "subject": "=Update on Multiple Disclosures",
-        "message": "=<p>Hello Waqas,</p>\n<p>I hope you're doing well!</p>\n<p>The following updates have been processed for both firms/individuals on FINRA - BrokerCheck:</p>\n\n<h3 style=\"color: #2c3e50;\">FIRM DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>CRD No.</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $json.firm_data.map(item => `\n      <tr>\n        <td>${item.firm_source_id}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<br>\n<h3 style=\"color: #2c3e50;\">INDIVIDUAL DISCLOSURES</h3>\n<table border=\"1\" cellpadding=\"8\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <thead>\n    <tr style=\"background-color: #f2f2f2; text-align: left;\">\n      <th>Individual CRD No.</th>\n      <th>Individual Name</th>\n      <th>Employee Firm ID</th>\n      <th>Employee Firm Name</th>\n      <th>File URL</th>\n      <th>Modified Date</th>\n    </tr>\n  </thead>\n  <tbody>\n    {{ $json.individual_data.map(item => `\n      <tr>\n        <td>${item.ind_source_id}</td>\n        <td>${item.individual_name}</td>\n        <td>${item.firm_id}</td>\n        <td>${item.firm_name}</td>\n        <td><a href=\"${item.url}\">${item.url}</a></td>\n        <td>${item.file_last_modified_date}</td>\n      </tr>`).join('') }}\n  </tbody>\n</table>\n\n<p style=\"margin-top: 20px;\">Best Regards,<br><strong>Ahmed Shafique</strong></p>",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.2,
-      "position": [
-        1344,
-        336
+        480
       ],
       "id": "5a2f1a9d-36cc-49e9-8e36-624aedc4196c",
-      "name": "Email - Both Details",
+      "name": "Both",
       "webhookId": "28ad3e75-f38d-4a53-a6b7-1358a881070c",
       "executeOnce": true,
       "credentials": {
@@ -700,6 +371,93 @@
           "name": "Gmail OAuth2 API"
         }
       }
+    },
+    {
+      "parameters": {
+        "sendTo": "2021ee313@student.uet.edu.pk",
+        "subject": "=Update on Multiple Disclosures",
+        "message": "=html\n \n<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Individual Disclosure Updates Report</title>\n<style>\n\n  * {\n\n    margin: 0;\n\n    padding: 0;\n\n    box-sizing: border-box;\n\n  }\n\n  body {\n\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;\n\n    line-height: 1.6;\n\n    color: #1a1a1a;\n\n    background-color: #f4f7fc;\n\n  }\n\n  .container {\n\n    max-width: 1000px;\n\n    margin: 20px auto;\n\n    background: #ffffff;\n\n    border-radius: 16px;\n\n    overflow: hidden;\n\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n\n  }\n\n  .header {\n\n    background: linear-gradient(135deg, #0c4e6e 0%, #1a6d8f 100%);\n\n    padding: 32px 40px;\n\n    text-align: center;\n\n  }\n\n  .header h1 {\n\n    color: #ffffff;\n\n    font-size: 28px;\n\n    font-weight: 600;\n\n    margin: 0;\n\n  }\n\n  .header p {\n\n    color: #cce7f0;\n\n    font-size: 14px;\n\n    margin-top: 8px;\n\n  }\n\n  .content {\n\n    padding: 40px;\n\n  }\n\n  .greeting {\n\n    margin-bottom: 28px;\n\n  }\n\n  .greeting h2 {\n\n    color: #0c4e6e;\n\n    font-size: 20px;\n\n    font-weight: 600;\n\n    margin-bottom: 12px;\n\n  }\n\n  .greeting p {\n\n    color: #4a5568;\n\n    font-size: 16px;\n\n    margin-bottom: 8px;\n\n  }\n\n  .update-badge {\n\n    background: #fee2e2;\n\n    border-left: 4px solid #dc2626;\n\n    padding: 16px 20px;\n\n    margin: 24px 0;\n\n    border-radius: 10px;\n\n  }\n\n  .update-badge p {\n\n    color: #991b1b;\n\n    font-size: 15px;\n\n    margin: 0;\n\n    font-weight: 500;\n\n  }\n\n  .data-section {\n\n    margin: 32px 0;\n\n  }\n\n  .data-section h3 {\n\n    color: #0c4e6e;\n\n    font-size: 18px;\n\n    font-weight: 600;\n\n    margin-bottom: 16px;\n\n    border-bottom: 2px solid #e2e8f0;\n\n    padding-bottom: 8px;\n\n  }\n\n  .individual-table {\n\n    width: 100%;\n\n    border-collapse: collapse;\n\n    background: #ffffff;\n\n    border-radius: 12px;\n\n    overflow-x: auto;\n\n    display: block;\n\n  }\n\n  .individual-table th {\n\n    background: #f7fafc;\n\n    color: #1a202c;\n\n    font-weight: 600;\n\n    font-size: 13px;\n\n    text-transform: uppercase;\n\n    letter-spacing: 0.5px;\n\n    padding: 14px 12px;\n\n    text-align: left;\n\n    border-bottom: 2px solid #e2e8f0;\n\n  }\n\n  .individual-table td {\n\n    padding: 12px 12px;\n\n    color: #2d3748;\n\n    font-size: 14px;\n\n    border-bottom: 1px solid #edf2f7;\n\n  }\n\n  .individual-table tr:last-child td {\n\n    border-bottom: none;\n\n  }\n\n  .individual-table tr:hover {\n\n    background-color: #f7fafc;\n\n  }\n\n  .individual-link {\n\n    color: #1a6d8f;\n\n    text-decoration: none;\n\n    font-weight: 500;\n\n  }\n\n  .individual-link:hover {\n\n    text-decoration: underline;\n\n  }\n\n  .footer {\n\n    background: #f8fafc;\n\n    padding: 28px 40px;\n\n    border-top: 1px solid #e2e8f0;\n\n    text-align: center;\n\n  }\n\n  .footer p {\n\n    color: #64748b;\n\n    font-size: 13px;\n\n    margin: 4px 0;\n\n  }\n\n  .signature {\n\n    margin-top: 16px;\n\n    color: #0c4e6e;\n\n    font-weight: 500;\n\n  }\n\n  .timestamp {\n\n    font-size: 11px;\n\n    color: #94a3b8;\n\n    margin-top: 12px;\n\n  }\n\n  @media (max-width: 700px) {\n\n    .content, .header, .footer {\n\n      padding: 24px 20px;\n\n    }\n\n    .individual-table th, .individual-table td {\n\n      padding: 8px 10px;\n\n      font-size: 12px;\n\n    }\n\n  }\n</style>\n</head>\n<body>\n<div class=\"container\">\n<div class=\"header\">\n<h1>👤 Individual Disclosure Updates Report</h1>\n<p>Individuals with recent disclosure modifications</p>\n</div>\n<div class=\"content\">\n<div class=\"greeting\">\n<h2>Hello Waqas,</h2>\n<p>Hope you're doing well! Here's an update on individuals whose disclosure files have been modified:</p>\n</div>\n<div class=\"update-badge\">\n<p>\n<span>⚠️</span>\n<strong>{{$json.changedCount}} individual(s) have updated disclosures</strong>\n</p>\n</div>\n<div class=\"data-section\">\n<h3>👥 Individuals with Updated Disclosures</h3>\n<table class=\"individual-table\">\n<thead>\n<tr>\n<th style=\"width: 15%\">Individual ID</th>\n<th style=\"width: 25%\">Individual Name</th>\n<th style=\"width: 15%\">Firm ID</th>\n<th style=\"width: 25%\">Firm Name</th>\n<th style=\"width: 20%\">Last Modified Date</th>\n</tr>\n</thead>\n<tbody>\n\n          {{$json.tableRows}}\n</tbody>\n</table>\n</div>\n</div>\n<div class=\"footer\">\n<div class=\"signature\">\n<p>Best regards,</p>\n<p><strong>Ahmed Shafique</strong></p>\n</div>\n<div class=\"timestamp\">\n\n      Report generated: {{$now.format('YYYY-MM-DD HH:mm:ss')}}\n</div>\n<p style=\"font-size: 11px; margin-top: 12px;\">© 2026 • Automated Disclosure Tracker</p>\n</div>\n</div>\n</body>\n</html>\n ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        272
+      ],
+      "id": "943b2b40-c7aa-4811-b0c7-6ae4fff8843e",
+      "name": "Individual",
+      "webhookId": "28ad3e75-f38d-4a53-a6b7-1358a881070c",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8cwObLkaOw3zcqxy",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "2021ee313@student.uet.edu.pk",
+        "subject": "=Update on Multiple Disclosures",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Firm Disclosure Updates Report</title>\n<style>\n\n  * {\n\n    margin: 0;\n\n    padding: 0;\n\n    box-sizing: border-box;\n\n  }\n\n  body {\n\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;\n\n    line-height: 1.6;\n\n    color: #1a1a1a;\n\n    background-color: #f4f7fc;\n\n  }\n\n  .container {\n\n    max-width: 850px;\n\n    margin: 20px auto;\n\n    background: #ffffff;\n\n    border-radius: 16px;\n\n    overflow: hidden;\n\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n\n  }\n\n  .header {\n\n    background: linear-gradient(135deg, #0c4e6e 0%, #1a6d8f 100%);\n\n    padding: 32px 40px;\n\n    text-align: center;\n\n  }\n\n  .header h1 {\n\n    color: #ffffff;\n\n    font-size: 28px;\n\n    font-weight: 600;\n\n    margin: 0;\n\n  }\n\n  .header p {\n\n    color: #cce7f0;\n\n    font-size: 14px;\n\n    margin-top: 8px;\n\n  }\n\n  .content {\n\n    padding: 40px;\n\n  }\n\n  .greeting {\n\n    margin-bottom: 28px;\n\n  }\n\n  .greeting h2 {\n\n    color: #0c4e6e;\n\n    font-size: 20px;\n\n    font-weight: 600;\n\n    margin-bottom: 12px;\n\n  }\n\n  .greeting p {\n\n    color: #4a5568;\n\n    font-size: 16px;\n\n    margin-bottom: 8px;\n\n  }\n\n  .update-badge {\n\n    background: #fee2e2;\n\n    border-left: 4px solid #dc2626;\n\n    padding: 16px 20px;\n\n    margin: 24px 0;\n\n    border-radius: 10px;\n\n  }\n\n  .update-badge p {\n\n    color: #991b1b;\n\n    font-size: 15px;\n\n    margin: 0;\n\n    font-weight: 500;\n\n  }\n\n  .data-section {\n\n    margin: 32px 0;\n\n  }\n\n  .data-section h3 {\n\n    color: #0c4e6e;\n\n    font-size: 18px;\n\n    font-weight: 600;\n\n    margin-bottom: 16px;\n\n    border-bottom: 2px solid #e2e8f0;\n\n    padding-bottom: 8px;\n\n  }\n\n  .firm-table {\n\n    width: 100%;\n\n    border-collapse: collapse;\n\n    background: #ffffff;\n\n    border-radius: 12px;\n\n    overflow: hidden;\n\n    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);\n\n  }\n\n  .firm-table th {\n\n    background: #f7fafc;\n\n    color: #1a202c;\n\n    font-weight: 600;\n\n    font-size: 13px;\n\n    text-transform: uppercase;\n\n    letter-spacing: 0.5px;\n\n    padding: 14px 16px;\n\n    text-align: left;\n\n    border-bottom: 2px solid #e2e8f0;\n\n  }\n\n  .firm-table td {\n\n    padding: 12px 16px;\n\n    color: #2d3748;\n\n    font-size: 14px;\n\n    border-bottom: 1px solid #edf2f7;\n\n  }\n\n  .firm-table tr:last-child td {\n\n    border-bottom: none;\n\n  }\n\n  .firm-table tr:hover {\n\n    background-color: #f7fafc;\n\n  }\n\n  .firm-link {\n\n    color: #1a6d8f;\n\n    text-decoration: none;\n\n    font-weight: 500;\n\n  }\n\n  .firm-link:hover {\n\n    text-decoration: underline;\n\n  }\n\n  .footer {\n\n    background: #f8fafc;\n\n    padding: 28px 40px;\n\n    border-top: 1px solid #e2e8f0;\n\n    text-align: center;\n\n  }\n\n  .footer p {\n\n    color: #64748b;\n\n    font-size: 13px;\n\n    margin: 4px 0;\n\n  }\n\n  .signature {\n\n    margin-top: 16px;\n\n    color: #0c4e6e;\n\n    font-weight: 500;\n\n  }\n\n  .timestamp {\n\n    font-size: 11px;\n\n    color: #94a3b8;\n\n    margin-top: 12px;\n\n  }\n\n  @media (max-width: 600px) {\n\n    .content, .header, .footer {\n\n      padding: 24px 20px;\n\n    }\n\n    .firm-table th, .firm-table td {\n\n      padding: 10px 12px;\n\n      font-size: 13px;\n\n    }\n\n  }\n</style>\n</head>\n<body>\n<div class=\"container\">\n<div class=\"header\">\n<h1>📋 Firm Disclosure Updates Report</h1>\n<p>Firms with recent file modifications</p>\n</div>\n<div class=\"content\">\n<div class=\"greeting\">\n<h2>Hello Waqas,</h2>\n<p>Hope you're doing well! Here's an update on firms whose disclosure files have been modified:</p>\n</div>\n<div class=\"update-badge\">\n<p>\n<span>⚠️</span>\n<strong>{{$json.changedCount}} firm(s) have updated disclosures</strong>\n</p>\n</div>\n<div class=\"data-section\">\n<h3>🏢 Firms with Updated Disclosures</h3>\n<table class=\"firm-table\">\n<thead>\n<tr>\n<th style=\"width: 20%\">Firm ID</th>\n<th style=\"width: 50%\">Firm Name</th>\n<th style=\"width: 30%\">Last Modified Date</th>\n</tr>\n</thead>\n<tbody>\n\n          {{$json.tableRows}}\n</tbody>\n<table>\n</div>\n</div>\n<div class=\"footer\">\n<div class=\"signature\">\n<p>Best regards,</p>\n<p><strong>Ahmed Shafique</strong></p>\n</div>\n<div class=\"timestamp\">\n\n      Report generated: {{$now.format('YYYY-MM-DD HH:mm:ss')}}\n</div>\n<p style=\"font-size: 11px; margin-top: 12px;\">© 2026 • Automated Disclosure Tracker</p>\n</div>\n</div>\n</body>\n</html>\n ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        80
+      ],
+      "id": "4dd1a3f7-5880-4f17-ac7c-10bdc5d2e62f",
+      "name": "Firm",
+      "webhookId": "28ad3e75-f38d-4a53-a6b7-1358a881070c",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8cwObLkaOw3zcqxy",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// --- CUSTOMIZATION ---\n\n// Process only Individual data\n\n// --- END CUSTOMIZATION ---\n \nconst items = $input.all();\n \n// Escape HTML function\n\nfunction escapeHtml(str) {\n\n  if (str === null || str === undefined) return '';\n\n  const strValue = String(str);\n\n  return strValue\n\n    .replace(/&/g, '&amp;')\n\n    .replace(/</g, '&lt;')\n\n    .replace(/>/g, '&gt;')\n\n    .replace(/\"/g, '&quot;')\n\n    .replace(/'/g, '&#39;');\n\n}\n \n// Format date for display\n\nfunction formatDate(dateString) {\n\n  if (!dateString) return 'N/A';\n\n  const date = new Date(dateString);\n\n  if (isNaN(date.getTime())) return dateString;\n\n  return date.toLocaleDateString('en-US', {\n\n    year: 'numeric',\n\n    month: 'short',\n\n    day: 'numeric'\n\n  });\n\n}\n \n// Process Individual Data\n\nfunction processIndividuals(individualArray) {\n\n  if (!individualArray || individualArray.length === 0) {\n\n    return {\n\n      changedCount: 0,\n\n      totalCount: 0,\n\n      tableRows: '<tr><td colspan=\"5\" style=\"text-align: center; padding: 40px; color: #94a3b8;\">✅ No individuals with updated disclosures at this time</td</tr>'\n\n    };\n\n  }\n\n  const matchedItems = [];\n\n  for (const item of individualArray) {\n\n    const individualId = item.ind_source_id || 'N/A';\n\n    // Handle empty individual_name - show as \"N/A\"\n\n    let individualName = item.individual_name || '';\n\n    if (!individualName || individualName.trim() === '') {\n\n      individualName = 'N/A';\n\n    }\n\n    const firmId = item.employee_firm_id || 'N/A';\n\n    const firmName = item.employee_firm_name || 'Unknown Firm';\n\n    const url = item.url || '';\n\n    const fileModified = item.file_last_modified_date;\n\n    if (!fileModified) continue;\n\n    if (!url || url.trim() === '') continue;\n\n    matchedItems.push({\n\n      individualId: individualId,\n\n      individualName: individualName,\n\n      firmId: firmId,\n\n      firmName: firmName,\n\n      url: url,\n\n      lastModifiedDate: formatDate(fileModified)\n\n    });\n\n  }\n\n  const totalChanged = matchedItems.length;\n\n  let tableRows = '';\n\n  if (matchedItems.length === 0) {\n\n    tableRows = '<tr><td colspan=\"5\" style=\"text-align: center; padding: 40px; color: #94a3b8;\">✅ No individuals with updated disclosures at this time</td</tr>';\n\n  } else {\n\n    for (const item of matchedItems) {\n\n      tableRows += `\n<tr>\n<td style=\"padding: 12px 12px; border-bottom: 1px solid #e2e8f0;\"><strong>${escapeHtml(item.individualId)}</strong></td>\n<td style=\"padding: 12px 12px; border-bottom: 1px solid #e2e8f0;\">\n<a href=\"${escapeHtml(item.url)}\" style=\"color: #1a6d8f; text-decoration: none; font-weight: 500;\" target=\"_blank\" rel=\"noopener noreferrer\">\n\n              ${escapeHtml(item.individualName)}\n</a>\n</td>\n<td style=\"padding: 12px 12px; border-bottom: 1px solid #e2e8f0;\">${escapeHtml(item.firmId)}</td>\n<td style=\"padding: 12px 12px; border-bottom: 1px solid #e2e8f0;\">${escapeHtml(item.firmName)}</td>\n<td style=\"padding: 12px 12px; border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 13px;\">\n\n            📅 ${escapeHtml(item.lastModifiedDate)}\n</td>\n</tr>\n\n      `;\n\n    }\n\n  }\n\n  return {\n\n    changedCount: matchedItems.length,\n\n    totalCount: totalChanged,\n\n    tableRows: tableRows\n\n  };\n\n}\n \n// Extract individual_data from input\n\nlet individualResult = { changedCount: 0, totalCount: 0, tableRows: '' };\n \nif (items && items.length > 0) {\n\n  const firstItem = items[0].json;\n\n  // Check if input has individual_data array (nested structure)\n\n  if (firstItem.individual_data && Array.isArray(firstItem.individual_data)) {\n\n    individualResult = processIndividuals(firstItem.individual_data);\n\n  }\n\n  // Check if it's a flat array of individuals\n\n  else if (firstItem.ind_source_id !== undefined) {\n\n    individualResult = processIndividuals(items.map(i => i.json));\n\n  }\n\n  // If it's an array with multiple items\n\n  else {\n\n    const individuals = [];\n\n    for (const item of items) {\n\n      const json = item.json;\n\n      if (json.ind_source_id !== undefined) {\n\n        individuals.push(json);\n\n      }\n\n    }\n\n    if (individuals.length > 0) {\n\n      individualResult = processIndividuals(individuals);\n\n    }\n\n  }\n\n}\n \n// Return JSON for the Gmail node\n\nreturn [{\n\n  json: {\n\n    changedCount: individualResult.changedCount,\n\n    totalCount: individualResult.totalCount,\n\n    tableRows: individualResult.tableRows,\n\n    hasData: individualResult.changedCount > 0\n\n  }\n\n}];\n "
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        272
+      ],
+      "id": "56043c8f-d000-46f7-9963-480570283d2e",
+      "name": "Ind"
+    },
+    {
+      "parameters": {
+        "jsCode": "// --- CUSTOMIZATION ---\n\n// No hardcode limit - will show ALL records\n\n// --- END CUSTOMIZATION ---\n \nconst items = $input.all();\n \n// Escape HTML function\n\nfunction escapeHtml(str) {\n\n  if (str === null || str === undefined) return '';\n\n  const strValue = String(str);\n\n  return strValue\n\n    .replace(/&/g, '&amp;')\n\n    .replace(/</g, '&lt;')\n\n    .replace(/>/g, '&gt;')\n\n    .replace(/\"/g, '&quot;')\n\n    .replace(/'/g, '&#39;');\n\n}\n \n// Format date for display\n\nfunction formatDate(dateString) {\n\n  if (!dateString) return 'N/A';\n\n  // Parse the date string like \"Mon, 27 Apr 2026 09:35:17 GMT\"\n\n  const date = new Date(dateString);\n\n  if (isNaN(date.getTime())) return dateString;\n\n  return date.toLocaleDateString('en-US', {\n\n    year: 'numeric',\n\n    month: 'short',\n\n    day: 'numeric'\n\n  });\n\n}\n \n// Process Firm Data\n\nfunction processFirms(firmArray) {\n\n  if (!firmArray || firmArray.length === 0) {\n\n    return {\n\n      changedCount: 0,\n\n      totalCount: 0,\n\n      tableRows: '<tr><td colspan=\"3\" style=\"text-align: center; padding: 40px; color: #94a3b8;\">✅ No firms with updated disclosures at this time</td</tr>'\n\n    };\n\n  }\n\n  const matchedItems = [];\n\n  for (const item of firmArray) {\n\n    const firmId = item.firm_source_id || 'N/A';\n\n    const firmName = item.firm_name || 'Unknown Firm';\n\n    const url = item.url || '';\n\n    const fileModified = item.file_last_modified_date;\n\n    if (!fileModified) continue;\n\n    if (!url || url.trim() === '') continue;\n\n    matchedItems.push({\n\n      id: firmId,\n\n      name: firmName,\n\n      url: url,\n\n      lastModifiedDate: formatDate(fileModified)\n\n    });\n\n  }\n\n  const totalChanged = matchedItems.length;\n\n  let tableRows = '';\n\n  if (matchedItems.length === 0) {\n\n    tableRows = '<tr><td colspan=\"3\" style=\"text-align: center; padding: 40px; color: #94a3b8;\">✅ No firms with updated disclosures at this time</td</tr>';\n\n  } else {\n\n    for (const item of matchedItems) {\n\n      tableRows += `\n<tr>\n<td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0;\"><strong>${escapeHtml(item.id)}</strong></td>\n<td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0;\">\n<a href=\"${escapeHtml(item.url)}\" style=\"color: #1a6d8f; text-decoration: none; font-weight: 500;\" target=\"_blank\" rel=\"noopener noreferrer\">\n\n              ${escapeHtml(item.name)}\n</a>\n</td>\n<td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 13px;\">\n\n            📅 ${escapeHtml(item.lastModifiedDate)}\n</td>\n</tr>\n\n      `;\n\n    }\n\n  }\n\n  return {\n\n    changedCount: matchedItems.length,\n\n    totalCount: totalChanged,\n\n    tableRows: tableRows\n\n  };\n\n}\n \n// Process Individual Data - NOW INCLUDES EMPTY NAMES\n\nfunction processIndividuals(individualArray) {\n\n  if (!individualArray || individualArray.length === 0) {\n\n    return {\n\n      changedCount: 0,\n\n      totalCount: 0,\n\n      tableRows: '<tr><td colspan=\"5\" style=\"text-align: center; padding: 40px; color: #94a3b8;\">✅ No individuals with updated disclosures at this time</td</td>'\n\n    };\n\n  }\n\n  const matchedItems = [];\n\n  for (const item of individualArray) {\n\n    // REMOVED the empty name filter - now includes ALL individuals\n\n    // Even if individual_name is empty, we still show them\n\n    const individualId = item.ind_source_id || 'N/A';\n\n    // If name is empty, show as \"N/A\" or \"Unnamed Individual\"\n\n    let individualName = item.individual_name || '';\n\n    if (!individualName || individualName.trim() === '') {\n\n      individualName = 'N/A';  // Show N/A for empty names\n\n    }\n\n    const firmId = item.employee_firm_id || 'N/A';\n\n    const firmName = item.employee_firm_name || 'Unknown Firm';\n\n    const url = item.url || '';\n\n    const fileModified = item.file_last_modified_date;\n\n    if (!fileModified) continue;\n\n    if (!url || url.trim() === '') continue;\n\n    matchedItems.push({\n\n      individualId: individualId,\n\n      individualName: individualName,\n\n      firmId: firmId,\n\n      firmName: firmName,\n\n      url: url,\n\n      lastModifiedDate: formatDate(fileModified)\n\n    });\n\n  }\n\n  const totalChanged = matchedItems.length;\n\n  let tableRows = '';\n\n  if (matchedItems.length === 0) {\n\n    tableRows = '<tr><td colspan=\"5\" style=\"text-align: center; padding: 40px; color: #94a3b8;\">✅ No individuals with updated disclosures at this time</td</tr>';\n\n  } else {\n\n    for (const item of matchedItems) {\n\n      tableRows += `\n<tr>\n<td style=\"padding: 12px 12px; border-bottom: 1px solid #e2e8f0;\"><strong>${escapeHtml(item.individualId)}</strong></td>\n<td style=\"padding: 12px 12px; border-bottom: 1px solid #e2e8f0;\">\n<a href=\"${escapeHtml(item.url)}\" style=\"color: #1a6d8f; text-decoration: none; font-weight: 500;\" target=\"_blank\" rel=\"noopener noreferrer\">\n\n              ${escapeHtml(item.individualName)}\n</a>\n</td>\n<td style=\"padding: 12px 12px; border-bottom: 1px solid #e2e8f0;\">${escapeHtml(item.firmId)}</td>\n<td style=\"padding: 12px 12px; border-bottom: 1px solid #e2e8f0;\">${escapeHtml(item.firmName)}</td>\n<td style=\"padding: 12px 12px; border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 13px;\">\n\n            📅 ${escapeHtml(item.lastModifiedDate)}\n</td>\n</tr>\n\n      `;\n\n    }\n\n  }\n\n  return {\n\n    changedCount: matchedItems.length,\n\n    totalCount: totalChanged,\n\n    tableRows: tableRows\n\n  };\n\n}\n \n// Check if we have the nested structure or flat structure\n\nlet firmResult = { changedCount: 0, totalCount: 0, tableRows: '' };\n\nlet individualResult = { changedCount: 0, totalCount: 0, tableRows: '' };\n \nif (items && items.length > 0) {\n\n  const firstItem = items[0].json;\n\n  // Check if input has firm_data and individual_data arrays (nested structure)\n\n  if (firstItem.firm_data !== undefined || firstItem.individual_data !== undefined) {\n\n    // Nested structure from your input\n\n    if (firstItem.firm_data && Array.isArray(firstItem.firm_data)) {\n\n      firmResult = processFirms(firstItem.firm_data);\n\n    }\n\n    if (firstItem.individual_data && Array.isArray(firstItem.individual_data)) {\n\n      individualResult = processIndividuals(firstItem.individual_data);\n\n    }\n\n  }\n\n  // Check if it's a flat array of firms\n\n  else if (firstItem.firm_source_id !== undefined) {\n\n    firmResult = processFirms(items.map(i => i.json));\n\n  }\n\n  // Check if it's a flat array of individuals\n\n  else if (firstItem.ind_source_id !== undefined) {\n\n    individualResult = processIndividuals(items.map(i => i.json));\n\n  }\n\n  // If it's an array of items with both types (mixed)\n\n  else {\n\n    // Separate firms and individuals from mixed array\n\n    const firms = [];\n\n    const individuals = [];\n\n    for (const item of items) {\n\n      const json = item.json;\n\n      if (json.firm_source_id !== undefined) {\n\n        firms.push(json);\n\n      }\n\n      if (json.ind_source_id !== undefined) {\n\n        individuals.push(json);\n\n      }\n\n    }\n\n    if (firms.length > 0) firmResult = processFirms(firms);\n\n    if (individuals.length > 0) individualResult = processIndividuals(individuals);\n\n  }\n\n}\n \n// Return combined JSON for the Gmail node\n\nreturn [{\n\n  json: {\n\n    firmChangedCount: firmResult.changedCount,\n\n    firmTotalCount: firmResult.totalCount,\n\n    firmTableRows: firmResult.tableRows,\n\n    individualChangedCount: individualResult.changedCount,\n\n    individualTotalCount: individualResult.totalCount,\n\n    individualTableRows: individualResult.tableRows,\n\n    hasFirmData: firmResult.changedCount > 0,\n\n    hasIndividualData: individualResult.changedCount > 0\n\n  }\n\n}];\n "
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1168,
+        480
+      ],
+      "id": "27039e19-2856-49de-a6ea-72882ab60b35",
+      "name": "Both-Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "// --- CUSTOMIZATION ---\n\n// No hardcoded limits - processes ALL firm data dynamically\n\n// --- END CUSTOMIZATION ---\n \nconst items = $input.all();\n \n// Escape HTML function\n\nfunction escapeHtml(str) {\n\n  if (str === null || str === undefined) return '';\n\n  const strValue = String(str);\n\n  return strValue\n\n    .replace(/&/g, '&amp;')\n\n    .replace(/</g, '&lt;')\n\n    .replace(/>/g, '&gt;')\n\n    .replace(/\"/g, '&quot;')\n\n    .replace(/'/g, '&#39;');\n\n}\n \n// Format date for display\n\nfunction formatDate(dateString) {\n\n  if (!dateString) return 'N/A';\n\n  const date = new Date(dateString);\n\n  if (isNaN(date.getTime())) return dateString;\n\n  return date.toLocaleDateString('en-US', {\n\n    year: 'numeric',\n\n    month: 'short',\n\n    day: 'numeric'\n\n  });\n\n}\n \n// Process Firm Data dynamically from input\n\nfunction processFirms(firmArray) {\n\n  if (!firmArray || firmArray.length === 0) {\n\n    return {\n\n      changedCount: 0,\n\n      totalCount: 0,\n\n      tableRows: '<tr><td colspan=\"3\" style=\"text-align: center; padding: 40px; color: #94a3b8;\">✅ No firms with updated disclosures at this time</td</tr>'\n\n    };\n\n  }\n\n  const matchedItems = [];\n\n  for (const item of firmArray) {\n\n    // Dynamically get values - works with any input structure\n\n    const firmId = item.firm_source_id || item.firm_id || item.id || 'N/A';\n\n    const firmName = item.firm_name || item.name || 'Unknown Firm';\n\n    const url = item.url || '';\n\n    const fileModified = item.file_last_modified_date || item.last_modified || item.modified_date;\n\n    if (!fileModified) continue;\n\n    if (!url || url.trim() === '') continue;\n\n    matchedItems.push({\n\n      id: firmId,\n\n      name: firmName,\n\n      url: url,\n\n      lastModifiedDate: formatDate(fileModified)\n\n    });\n\n  }\n\n  const totalChanged = matchedItems.length;\n\n  let tableRows = '';\n\n  if (matchedItems.length === 0) {\n\n    tableRows = '<tr><td colspan=\"3\" style=\"text-align: center; padding: 40px; color: #94a3b8;\">✅ No firms with updated disclosures at this time</td</tr>';\n\n  } else {\n\n    for (const item of matchedItems) {\n\n      tableRows += `\n<tr>\n<td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0;\"><strong>${escapeHtml(item.id)}</strong></td>\n<td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0;\">\n<a href=\"${escapeHtml(item.url)}\" style=\"color: #1a6d8f; text-decoration: none; font-weight: 500;\" target=\"_blank\" rel=\"noopener noreferrer\">\n\n              ${escapeHtml(item.name)}\n</a>\n</td>\n<td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 13px;\">\n\n            📅 ${escapeHtml(item.lastModifiedDate)}\n</td>\n</tr>\n\n      `;\n\n    }\n\n  }\n\n  return {\n\n    changedCount: matchedItems.length,\n\n    totalCount: totalChanged,\n\n    tableRows: tableRows\n\n  };\n\n}\n \n// Dynamically extract firm data from ANY input structure\n\nlet firmResult = { changedCount: 0, totalCount: 0, tableRows: '' };\n \nif (items && items.length > 0) {\n\n  const firstItem = items[0].json;\n\n  // Case 1: Nested structure with firm_data array\n\n  if (firstItem.firm_data && Array.isArray(firstItem.firm_data)) {\n\n    firmResult = processFirms(firstItem.firm_data);\n\n  }\n\n  // Case 2: Nested structure with firm_data as property but not array\n\n  else if (firstItem.firm_data) {\n\n    firmResult = processFirms([firstItem.firm_data]);\n\n  }\n\n  // Case 3: Direct array of firms (first item has firm_source_id)\n\n  else if (firstItem.firm_source_id !== undefined) {\n\n    firmResult = processFirms(items.map(i => i.json));\n\n  }\n\n  // Case 4: Items array with mixed content - extract firms\n\n  else {\n\n    const firms = [];\n\n    for (const item of items) {\n\n      const json = item.json;\n\n      // Check if this item looks like a firm record\n\n      if (json.firm_source_id !== undefined || json.firm_name !== undefined) {\n\n        firms.push(json);\n\n      }\n\n      // Check if item has firm_data property\n\n      else if (json.firm_data) {\n\n        if (Array.isArray(json.firm_data)) {\n\n          firms.push(...json.firm_data);\n\n        } else {\n\n          firms.push(json.firm_data);\n\n        }\n\n      }\n\n    }\n\n    if (firms.length > 0) {\n\n      firmResult = processFirms(firms);\n\n    }\n\n  }\n\n}\n \n// Return JSON for the Gmail node\n\nreturn [{\n\n  json: {\n\n    changedCount: firmResult.changedCount,\n\n    totalCount: firmResult.totalCount,\n\n    tableRows: firmResult.tableRows,\n\n    hasData: firmResult.changedCount > 0\n\n  }\n\n}];\n "
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        80
+      ],
+      "id": "47fb9fb9-e1dc-48f3-a52e-a00263ec0d69",
+      "name": "Firm-Code"
     }
   ],
   "pinData": {},
@@ -708,113 +466,14 @@
       "main": [
         [
           {
-            "node": "Individual - Disclosures",
+            "node": "Firm - Y",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Firm - Disclosures",
+            "node": "Individual - Y",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "Firm - Disclosures": {
-      "main": [
-        [
-          {
-            "node": "Firm - MetaData",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Firm - MetaData": {
-      "main": [
-        [
-          {
-            "node": "Firm - Last Modification",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Individual - Disclosures": {
-      "main": [
-        [
-          {
-            "node": "Individual - MetaData",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Individual - MetaData": {
-      "main": [
-        [
-          {
-            "node": "Individual - Last Modification",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Firm - Last Modification": {
-      "main": [
-        [
-          {
-            "node": "Update the Firm Disclosures Details",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Individual - Last Modification": {
-      "main": [
-        [
-          {
-            "node": "Update the Individual Disclosures Details1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Firm - Details": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update the Individual Disclosures Details1": {
-      "main": [
-        [
-          {
-            "node": "Individual - Details",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Individual - Details": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 1
           }
         ]
       ]
@@ -830,40 +489,133 @@
         ]
       ]
     },
-    "Update the Firm Disclosures Details": {
+    "Switch": {
       "main": [
         [
           {
-            "node": "Firm - Details",
+            "node": "Firm-Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ind",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Both-Code",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Switch": {
+    "Individual - Y": {
       "main": [
         [
           {
-            "node": "Email - Firm Details",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Email - Individual Details",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Email - Both Details",
+            "node": "rearrange-individuals",
             "type": "main",
             "index": 0
           }
         ]
+      ]
+    },
+    "Firm - Y": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "firm_data": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "individual_data": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "firm_data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "rearrange-individuals": {
+      "main": [
+        [
+          {
+            "node": "individual_data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ind": {
+      "main": [
+        [
+          {
+            "node": "Individual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Both-Code": {
+      "main": [
+        [
+          {
+            "node": "Both",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firm-Code": {
+      "main": [
+        [
+          {
+            "node": "Firm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Both": {
+      "main": [
+        []
       ]
     }
   },
@@ -872,7 +624,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "37f62433-a6f8-46e3-9410-23e7a980ed1b",
+  "versionId": "5ec7d0bb-ed6c-4fc6-acf6-82ebbc99f978",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "b48f0b592d7fbc9ba14f4ca684b9d716f976ced5dafc7df6d058c1e7472a5e8b"
